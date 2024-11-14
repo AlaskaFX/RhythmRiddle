@@ -10,5 +10,5 @@ urlpatterns = [
     path('subscription', views.subscription, name='subscription'), # Правила
     path('support', views.support, name='support'), # Правила
 
-    path('account', views.account, name='account'), # Аккаунт
+    path('register', views.register, name='register'), # Регистрация
 ]

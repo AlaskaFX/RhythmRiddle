@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("<h4>Основная страница</h4>")
+    return render(request, 'start/index.html')
 
 def about(request):
     return HttpResponse("<h4>О нас</h4>")
@@ -19,3 +19,8 @@ def subscription(request):
 
 def support(request):
     return HttpResponse("<h4>Поддержка</h4>")
+
+###
+
+def account(request):
+    return HttpResponse("<h4>текст</h4>")

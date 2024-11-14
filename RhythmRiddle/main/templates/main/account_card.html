@@ -1,0 +1,42 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'main/css/account_settings_card.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="profile-section">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="{% url 'account_data' %}">Настройка профиля</a></li>
+                <li><a href="{% url 'account_card' %}">Привязка карты</a></li>
+                <li><a href="#">Оповещения</a></li>
+            </ul>
+        </aside>
+        <section class="content">
+            <div class="card-linking-settings">
+                <h2>Данные банковской карты</h2>
+                <form>
+                    <div class="form-group">
+                            <label for="first-name">Имя</label>
+                            <input type="text" id="first-name" placeholder="Введите ваше имя">
+                    </div>
+                        <div class="form-group">
+                            <label for="last-name">Фамилия</label>
+                            <input type="text" id="last-name" placeholder="Введите вашу фамилию">
+                        </div>
+                    <input type="text" placeholder="Электронная почта">
+                    <div class="form-group">
+                        <label for="last-name">Введите номер карты</label>
+                        <input type="text" placeholder="1234 1234 1234 1234">
+                        <input type="text" placeholder="CVV">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="ММ/ГГ">
+                    </div>
+                    <button class="save-button">Сохранить</button>
+                </form>
+            </div>
+
+        </section>
+    </div>
+{% endblock %}

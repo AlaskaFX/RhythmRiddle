@@ -1,0 +1,51 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'start/css/index.css' %}">
+{% endblock %}
+{% block content %}
+    <div>
+        <section class="highlight">
+            <div class="highlight-image">
+                <img src="{% static 'start/img/highlight-placeholder.jpg' %}" alt="Лучшее за этот месяц">
+            </div>
+            <div class="highlight-info">
+                <h1>Лучшее за этот месяц</h1>
+                <h2>Название мелодии</h2>
+                <p>Автор</p>
+                <button class="save-btn">Сохранить</button>
+                <span class="play-count">10 000 000 прослушиваний</span>
+            </div>
+        </section>
+
+        <section class="quick-picks">
+            <h3>Быстрая выборка</h3>
+            <div class="song-list">
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+            </div>
+        </section>
+
+        <section class="favorite-music">
+            <h3>Избранная музыка</h3>
+            <div class="song-list">
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+            </div>
+        </section>
+
+        <section class="recommended-playlists">
+            <h3>Рекомендованные плейлисты</h3>
+            <div class="playlist-list">
+                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
+                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
+                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
+                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

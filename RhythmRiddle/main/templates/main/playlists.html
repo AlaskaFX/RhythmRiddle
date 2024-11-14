@@ -1,0 +1,30 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'main/css/playlists.css' %}">
+{% endblock %}
+{% block content %}
+    <div>
+        <section class="playlists">
+            <h2>Мои плейлисты</h2>
+            <div class="playlist-grid">
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+            </div>
+
+            <h2>Общие плейлисты</h2>
+            <div class="playlist-grid">
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+            </div>
+
+            <button class="create-playlist">Создать новый плейлист</button>
+        </section>
+    </div>
+{% endblock %}

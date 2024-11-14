@@ -1,0 +1,116 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.profile-section {
+    display: flex;
+    padding: 30px;
+}
+
+.sidebar {
+    width: 14%;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px;
+    height: 180px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    position: relative;
+    top: 60px;
+    margin-left: 163px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    padding: 10px 0;
+    font-weight: bold;
+    color: #0077cc;
+    cursor: pointer;
+}
+
+.sidebar a.active, .sidebar a:hover {
+    color: #0077cc;
+}
+
+.content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 60%;
+    position: relative;
+    top: 60px;
+    margin-left:20px;
+}
+
+.card-linking-settings {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    gap: 15px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.save-button {
+    background-color: #0077cc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #005fa3;
+}
+
+.success-message {
+    background-color: #e6f9e6;
+    color: #2d7a2d;
+    padding: 10px;
+    border: 1px solid #2d7a2d;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}

@@ -1,0 +1,69 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'main/css/account_settings_data.css' %}">
+{% endblock %}
+{% block content %}
+    <div>
+        <section class="profile-settings">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="{% url 'account_data' %}">Настройка профиля</a></li>
+                    <li><a href="{% url 'account_card' %}">Привязка карты</a></li>
+                    <li>Оповещения</li>
+                </ul>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-photo">
+                    <h2>Фото профиля</h2>
+                    <div class="photo-upload">
+                        <img src="{% static 'start/img/default-avatar.png' %}" alt="Profile Photo">
+                        <button class="upload-btn">Загрузить фото</button>
+                        <button class="delete-btn">Удалить</button>
+                    </div>
+                    <div class="photo-requirements">
+                        <p>Требования к фото:</p>
+                        <ul>
+                            <li>Размер - 400x400px</li>
+                            <li>Максимум - 2MB</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="profile-data">
+                    <h2>Данные профиля</h2>
+                    <form style="height:500px">
+                        <div class="form-group">
+                            <label for="first-name">Имя</label>
+                            <input type="text" id="first-name" placeholder="Введите ваше имя">
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Фамилия</label>
+                            <input type="text" id="last-name" placeholder="Введите вашу фамилию">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Электронная почта</label>
+                            <input type="email" id="email" placeholder="Введите новую электронную почту">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" id="password" placeholder="Введите новый пароль">
+                            <p class="password-hint">Пароль должен содержать минимум 8 символов: цифры, строчные и заглавные буквы, символы.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Страна</label>
+                            <select id="country">
+                                <option value="">Выберите страну</option>
+                                <option value="russia">Россия</option>
+                                <option value="usa">США</option>
+                            </select>
+                        </div><br>
+                        <a><button type="submit" class="save-btn" style="top:5px;">Сохранить</button></a>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </div>
+{% endblock %}

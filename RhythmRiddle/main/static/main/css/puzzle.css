@@ -1,0 +1,151 @@
+
+.task-selection {
+    text-align: center;
+    padding: 20px;
+}
+
+.stats-button {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.stats-button:hover {
+    background-color: #0088FF;
+}
+
+.tasks {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.task-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+
+.start-task {
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.start-task:hover {
+    background-color: #0088FF;
+}
+
+.subscription-prompt {
+    margin-top: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+
+main {
+    padding: 20px;
+}
+
+.highlight {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.highlight-image img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+.highlight-info h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.highlight-info h2 {
+    font-size: 1.5rem;
+    color: #666;
+}
+
+.highlight-info .save-btn {
+    background-color: #00aaff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.highlight-info .save-btn:hover {
+    background-color: #008ecc;
+}
+
+.highlight-info .play-count {
+    display: block;
+    margin-top: 10px;
+    color: #888;
+}
+
+.song-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.song-item, .playlist-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    max-width: 150px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.player .track-info {
+    color: #ccc;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.volume-control input[type="range"] {
+    width: 100px;
+}

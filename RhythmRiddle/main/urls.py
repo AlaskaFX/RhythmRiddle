@@ -12,4 +12,6 @@ urlpatterns = [
     path('/data', views.data, name='account_data'), # Подписка
     path('/card', views.card, name='account_card'), # Подписка
 
+    path('/download', views.download_music, name='download'),
+
 ]

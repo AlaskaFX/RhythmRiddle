@@ -37,6 +37,24 @@
                             <button class="start-modal-btn">Начать</button>
                             <button class="close-modal-btn">Отмена</button>
                         </div>
+
+                        <!-- Новый контент, который будет показан после нажатия на "Начать" -->
+                        <div class="game-content" style="display: none;">
+                            <div class="image-placeholder">
+                                <!-- Здесь можно разместить изображение -->
+                                <img src="{% static 'main/img/placeholder.png' %}" alt="Плейхолдер" id="gameImage">
+                            </div>
+                            <div class="action-buttons">
+                                <button class="action-btn" data-result="win">Кнопка 1</button>
+                                <button class="action-btn" data-result="lose">Кнопка 2</button>
+                                <button class="action-btn" data-result="lose">Кнопка 3</button>
+                                <button class="action-btn" data-result="lose">Кнопка 4</button>
+                            </div>
+                        </div>
+
+                        <!-- Текст результата -->
+                        <div class="result-message" style="display: none;"></div>
+
                     </div>
                   </div>
                     <script>
@@ -61,6 +79,49 @@
                                 modal.style.display = "none";
                             }
                         });
+
+                        // Обработка нажатия на кнопку "Начать"
+                    document.querySelector(".start-modal-btn").addEventListener("click", () => {
+                        // Скрываем все элементы выбора и показываем игровое содержимое
+                        document.querySelector('.selection-menu').style.display = 'none';
+                        document.querySelector('.modal-buttons').style.display = 'none';
+                        document.querySelector('.game-content').style.display = 'block';
+
+                        // Воспроизведение фоновой музыки
+                        backgroundMusic = new Audio("{% static 'main/audio/test.mp3' %}");
+                        backgroundMusic.play();
+                        });
+
+                        // Функция для остановки фоновой музыки
+                        function stopBackgroundMusic() {
+                            if (backgroundMusic) {
+                                backgroundMusic.pause();
+                                backgroundMusic.currentTime = 0; // Сбрасываем время воспроизведения
+                            }
+                        }
+
+                        // Обработка нажатия на кнопки действий
+                        document.querySelectorAll('.action-btn').forEach(button => {
+                            button.addEventListener('click', () => {
+                                // Останавливаем фоновую музыку
+                                stopBackgroundMusic();
+
+                                // Воспроизводим звук в зависимости от результата
+                                buttonSound = new Audio(button.dataset.result === "win"
+                                    ? "{% static 'main/audio/win-sound.wav' %}"
+                                    : "{% static 'main/audio/lose-sound.wav' %}");
+                                buttonSound.play();
+
+                                // Скрываем все элементы игрового содержимого
+                                document.querySelector('.game-content').style.display = 'none';
+
+                                // Отображаем текст результата
+                                const resultMessage = document.querySelector('.result-message');
+                                resultMessage.textContent = button.dataset.result === "win" ? "Вы победили!" : "Вы проиграли!";
+                                resultMessage.style.display = 'block';
+                            });
+                        });
+
                     </script>
             <p class="subscription-prompt">
                 С нашей подпиской, вы получите возможность выполнять больше ежедневных и ещё большими наградами.

@@ -51,15 +51,8 @@
                             <input type="password" id="password" placeholder="Введите новый пароль">
                             <p class="password-hint">Пароль должен содержать минимум 8 символов: цифры, строчные и заглавные буквы, символы.</p>
                         </div>
-                        <div class="form-group">
-                            <label for="country">Страна</label>
-                            <select id="country">
-                                <option value="">Выберите страну</option>
-                                <option value="russia">Россия</option>
-                                <option value="usa">США</option>
-                            </select>
-                        </div><br>
                         <a><button type="submit" class="save-btn" style="top:5px;">Сохранить</button></a>
+                        <button type="submit" class="delete-btn" formaction="{% url 'logout' %}">Выйти</button>
                     </form>
                 </div>
 

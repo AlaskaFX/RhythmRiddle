@@ -4,24 +4,28 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+class LoginUserForm(forms.Form):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
-    country_choices = [
-        ('RU', 'Россия'),
-        ('KK', 'Казахстан'),
-        # потом дополнить
-    ]
-    country = forms.ChoiceField(choices=country_choices)
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'country', 'password']
+        fields = ['first_name', 'last_name', 'email', 'username', 'password']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise ValidationError("Этот адрес электронной почты уже используется.")
         return email
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Этот логин уже используется.")
+        return username
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
@@ -43,24 +47,9 @@ class RegistrationForm(forms.ModelForm):
 
         return password
 
-    def generate_username(self, first_name, last_name):
-        base_username = f"{first_name.lower()}_{last_name.lower()}"
-        username = base_username
-        counter = 1
-
-        while User.objects.filter(username=username).exists():
-            username = f"{base_username}{counter}"
-            counter += 1
-
-        return username
-
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
-
-        first_name = self.cleaned_data['first_name']
-        last_name = self.cleaned_data['last_name']
-        user.username = self.generate_username(first_name, last_name)
 
         if commit:
             user.save()

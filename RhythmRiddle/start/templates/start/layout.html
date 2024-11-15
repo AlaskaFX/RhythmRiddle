@@ -31,7 +31,7 @@
         <option value="usa">США</option>
     </select>
     <div class="auth-button">
-        <a href="{% url 'about' %}" class="nav-link active">Войти</a>
+        <a href="{% url 'login' %}" class="nav-link active">Войти</a>
     </div>
     <div class="registration-button">
         <a href="{% url 'register' %}" class="nav-link active">Регистрация</a>
@@ -47,17 +47,16 @@
             <img src="{% static 'start/img/rhythmeriddle.png' %}">
         </div>
         <div class="footer-links">
-            <a href="#">О нас</a>
-            <a href="#">Реклама</a>
-            <a href="#">Пользовательское соглашение</a>
-            <a href="#">Подписка</a>
-            <a href="#">Поддержка</a>
+            <a href="{% url 'about' %}">О нас</a>
+            <a href="{% url 'advertising' %}">Реклама</a>
+            <a href="{% url 'rules' %}">Пользовательское соглашение</a>
+            <a href="{% url 'support' %}">Поддержка</a>
         </div>
         <div class="footer-socials">
-            <a href="https://www.youtube.com/@fanderplay2757"><img src="{% static 'start/img/yt.png' %}" alt="YouTube"></a>
-            <a href=""><img src="{% static 'start/img/twitter.png' %}" alt="Twitter"></a>
-            <a href="https://vk.com/marshavella69"><img src="{% static 'start/img/vk.png' %}" alt="VK"></a>
-            <a href="https://t.me/nfefl"><img src="{% static 'start/img/tg1.png' %}" alt="Telegram"></a>
+            <a href="#"><img src="{% static 'start/img/yt.png' %}" alt="YouTube"></a>
+            <a href="#"><img src="{% static 'start/img/twitter.png' %}" alt="Twitter"></a>
+            <a href="#"><img src="{% static 'start/img/vk.png' %}" alt="VK"></a>
+            <a href="#"><img src="{% static 'start/img/tg1.png' %}" alt="Telegram"></a>
         </div>
     </div>
     <p class="footer-copyright">РитмРиддл © 2024. Все права защищены.</p>

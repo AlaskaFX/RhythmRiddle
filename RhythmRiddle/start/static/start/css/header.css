@@ -46,6 +46,12 @@ header {
     position:relative;
 }
 
+.logo {
+    width:200px;
+    height:100px;
+
+}
+
 .header-nav .menu {
     display: flex;
     list-style: none;

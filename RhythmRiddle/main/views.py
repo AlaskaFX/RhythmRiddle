@@ -4,20 +4,18 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from yandex_music import Client
 
-client = Client('token').init()
+client = Client('y0_AgAAAAAPDlgSAAG8XgAAAAEYnuQIAAAurXZ2dy5B471QOQycr7x3WGLTGw').init()
 
 @login_required
 def puzzle(request):
     return render(request, 'main/puzzle.html')
 
-@login_required
 def search(request):
     return render(request, 'main/search.html')
 
-@login_required
 def feed(request):
-    # track_list = client.tracks(['32881882:4009574']) # Мой номер 245
-    track_list = client.tracks(['25996081:11277'])  # Владимирский централ
+    track_list = client.tracks(['32881882:4009574']) # Мой номер 245
+    # track_list = client.tracks(['25996081:11277'])  # Владимирский централ
     track_info = {
         'title': track_list[0].title,
         'artists': ', '.join(artist.name for artist in track_list[0].artists),
@@ -27,7 +25,7 @@ def feed(request):
     }
     return render(request, 'main/feed.html', {'track': track_info})
 
-@login_required
+
 def download_music(request):
     track_list = client.tracks(['25996081:11277'])
     track_to_download = track_list[0]
@@ -44,7 +42,7 @@ def download_music(request):
 def playlists(request):
     return render(request, 'main/playlists.html')
 
-@login_required
+
 def subscription(request):
     return render(request, 'main/subscription.html')
 

@@ -1,4 +1,4 @@
-{% load static %}
+    {% load static %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -24,6 +24,13 @@
             <img src="{% static 'start/img/rhythmeriddle.png' %}">
             </a>
         </div>
+        <ul class="menu">
+            <li><a href="{% url 'puzzle' %}" class="nav-link">Пазлы</a></li>
+            <li><a href="{% url 'search' %}" class="nav-link">Музыка</a></li>
+            <li><a href="{% url 'feed' %}" class="nav-link">Главная</a></li>
+            <li><a href="{% url 'playlists' %}" class="nav-link">Плейлисты</a></li>
+            <li><a href="{% url 'subscription' %}" class="nav-link">Подписка</a></li>
+        </ul>
     </nav>
 
     <select id="country">

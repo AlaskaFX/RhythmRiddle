@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from yandex_music import Client
 
-client = Client('y0_AgAAAAAPDlgSAAG8XgAAAAEYnuQIAAAurXZ2dy5B471QOQycr7x3WGLTGw').init()
+client = Client('token').init()
 
 @login_required
 def puzzle(request):

@@ -22,7 +22,7 @@ body {
     max-width: 400px;
     width: 100%;
     top:10px;
-    height:95%;
+    height:98%;
 }
 
 h1 {
@@ -79,11 +79,14 @@ input:focus {
 }
 
 .forgot-password {
-    text-align: right;
+    position:relative;
+    text-align: left;
     color: #007bff;
     font-size: 12px;
     text-decoration: none;
     margin-right:125px;
+    width:100px;
+    top:-10px;
 }
 
 .forgot-password:hover {
@@ -144,4 +147,5 @@ input:focus {
 .register a:hover {
     text-decoration: underline;
 }
+
 

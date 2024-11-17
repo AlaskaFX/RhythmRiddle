@@ -6,16 +6,17 @@
 {% block content %}
     <div class="container">
             <h1>Регистрация</h1>
+            <!---НЕ ЗАБЫТЬ ПОФИКСИТЬ СТРАНИЦУ КОГДА НЕПРАВИЛЬНЫЙ ПАРОЛЬ И ИМЯ -->
             <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <div id="password-requirements">
                 <ul>
-                    <li id="length" class="invalid" style="margin-right:200px">Минимум 8 символов</li>
-                    <li id="uppercase" class="invalid" style="margin-right:130px">Хотя бы одна заглавная буква</li>
-                    <li id="lowercase" class="invalid" style="margin-right:140px">Хотя бы одна строчная буква</li>
-                    <li id="number" class="invalid" style="margin-right:200px">Хотя бы одна цифра</li>
-                    <li id="special" class="invalid" style="width:280px;">Хотя бы один специальный символ</li>
+                    <li id="length" class="invalid" style="margin-left:-200px; width:180px; text-align:left">Минимум 8 символов</li>
+                    <li id="uppercase" class="invalid" style="margin-left:-200px; width:250px; text-align:left">Хотя бы одна заглавная буква</li>
+                    <li id="lowercase" class="invalid" style="margin-left:-200px; width:250px; text-align:left">Хотя бы одна строчная буква</li>
+                    <li id="number" class="invalid" style="margin-left:-200px; width:180px; text-align:left">Хотя бы одна цифра</li>
+                    <li id="special" class="invalid" style="margin-left:-200px; width:280px; text-align:left">Хотя бы один специальный символ</li>
                 </ul>
             </div>
             <button type="submit">Зарегистрироваться</button>

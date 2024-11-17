@@ -4,36 +4,30 @@
     <link rel="stylesheet" href="{% static 'start/css/login.css' %}">
 {% endblock %}
 {% block content %}
-    <form method="post">
-    {% csrf_token %}
-    </form>
     <div class="container">
-            <h1>С возвращением!</h1>
-            <p>Пожалуйста, авторизуйтесь для продолжения</p>
-            <form>
-                <label for="email">Электронная почта</label>
-                <input type="email" id="email" placeholder="Введите электронную почту">
+        <h1>С возвращением!</h1>
+        <p1>Пожалуйста, авторизуйтесь для продолжения</p1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
 
-                <label for="password">Пароль</label>
-                <input type="password" id="password" placeholder="Введите пароль">
-
-                <div class="remember-me">
-                    <input type="checkbox" id="remember">
-                    <label for="remember">Запомнить меня</label>
-                </div>
-
-                <a href="#" class="forgot-password">Забыли пароль?</a>
-
-                <button type="submit" class="login-btn">Войти</button>
-            </form>
-            <p>Нажимая на кнопку "Войти", вы соглашаетесь с условиями <a href="{% url 'rules' %}">Пользовательского соглашения</a>.</p>
-
-            <div class="social-login">
-                <p>Или авторизуйтесь через:</p>
-                <button class="social-btn google">Google</button>
-                <button class="social-btn vk">ВК</button>
+            <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <label for="remember">Запомнить меня</label>
             </div>
 
-            <p class="register">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a>.</p>
+            <a href="#" class="forgot-password">Забыли пароль?</a>
+
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+        <p>Нажимая на кнопку "Войти", вы соглашаетесь с условиями <a href="{% url 'rules' %}">Пользовательского соглашения</a>.</p>
+
+        <div class="social-login">
+            <p>Или авторизуйтесь через:</p>
+            <button class="social-btn google">Google</button>
+            <button class="social-btn vk">ВК</button>
+        </div>
+
+        <p class="register">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a>.</p>
     </div>
 {% endblock %}

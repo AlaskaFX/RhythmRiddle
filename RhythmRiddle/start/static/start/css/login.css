@@ -22,6 +22,7 @@ body {
     max-width: 400px;
     width: 100%;
     top:10px;
+    height:95%;
 }
 
 h1 {
@@ -29,7 +30,7 @@ h1 {
     color: #333;
 }
 
-p {
+p1 {
     margin-bottom: 15px;
     color: #555;
     font-size: 14px;

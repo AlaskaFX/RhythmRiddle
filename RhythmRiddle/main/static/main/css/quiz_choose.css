@@ -16,6 +16,23 @@ body {
     text-align: center;
 }
 
+.action-btn
+{
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.action-btn:hover
+{
+    background-color: #0088FF;
+    border-radius: 20px;
+    color: white;
+}
+
 .open-modal-btn {
     padding: 10px 20px;
     background-color: #0077cc;

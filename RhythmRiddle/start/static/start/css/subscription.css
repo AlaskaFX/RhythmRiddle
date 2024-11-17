@@ -58,12 +58,13 @@ main {
     background-color: #0088FF;
 }
 
-.subscribe-btn {
+.subscribe-btn1 {
+    position:relative;
     height:50px;
     width:200px;
     background-color: #00A0FF;
     color: #fff;
-    top:100px;
+    top:40px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
@@ -73,7 +74,27 @@ main {
     text-align:center;
 }
 
-.subscribe-btn:hover {
+.subscribe-btn2 {
+    position:relative;
+    height:50px;
+    width:200px;
+    background-color: #00A0FF;
+    color: #fff;
+    top:1px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    border: 1px solid #0088FF;
+    text-align:center;
+}
+
+.subscribe-btn1:hover {
+    background-color: #0088FF;
+}
+
+.subscribe-btn2:hover {
     background-color: #0088FF;
 }
 

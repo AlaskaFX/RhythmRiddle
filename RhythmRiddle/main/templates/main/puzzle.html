@@ -42,7 +42,7 @@
                         <div class="game-content" style="display: none;">
                             <div class="image-placeholder">
                                 <!-- Здесь можно разместить изображение -->
-                                <img src="{% static 'main/img/placeholder.png' %}" alt="Плейхолдер" id="gameImage">
+                                <img src="{% static 'main/img/placeholder.png' %}" alt="Плейc[олдер" id="gameImage">
                             </div>
                             <div class="action-buttons">
                                 <button class="action-btn" data-result="win">Кнопка 1</button>
@@ -125,7 +125,7 @@
                     </script>
             <p class="subscription-prompt">
                 С нашей подпиской, вы получите возможность выполнять больше ежедневных и ещё большими наградами.
-                <a href="#">Приобрести подписку</a>
+                <a href="{% url 'subscription' %}">Приобрести подписку</a>
             </p>
             </div>
         </section>

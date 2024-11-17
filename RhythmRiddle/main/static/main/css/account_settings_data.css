@@ -26,11 +26,11 @@ body {
 }
 
 .sidebar{
-    width: 20%;
+    width: 15%;
     background-color: #ffffff;
     border-right: 1px solid #e0e0e0;
     padding: 20px;
-    height: 180px;
+    height: 130px;
     border-radius: 10px;
     border: 1px solid #ddd;
     position: relative;

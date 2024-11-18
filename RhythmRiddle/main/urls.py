@@ -9,9 +9,7 @@ urlpatterns = [
     path('/playlists', views.playlists, name='playlists'), # Плейлисты
     path('/subscription', views.subscription, name='subscription'), # Подписка
 
-    path('/data', views.data, name='account_data'), # Подписка
-    path('/card', views.card, name='account_card'), # Подписка
-
-    path('/download', views.download_music, name='download'),
+    path('/data', views.data, name='account_data'), # Профиль
+    path('/card', views.card, name='account_card'), # Данные карты
 
 ]

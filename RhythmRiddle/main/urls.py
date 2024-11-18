@@ -1,6 +1,8 @@
 
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('/puzzle', views.puzzle, name='puzzle'), # Пазлы
@@ -12,4 +14,4 @@ urlpatterns = [
     path('/data', views.data, name='account_data'), # Профиль
     path('/card', views.card, name='account_card'), # Данные карты
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

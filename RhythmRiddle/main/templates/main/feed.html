@@ -2,17 +2,18 @@
 {% load static %}
 {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'start/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/song_label.css' %}">
 {% endblock %}
 {% block content %}
     <div>
         <section class="highlight">
             <div class="highlight-image">
-                <img src="https://{{track.cover}}" alt="Лучшее за этот месяц">
+                <img src="{{ song.cover.url }}" alt="Лучшее за этот месяц">
             </div>
             <div class="highlight-info">
                 <h1>Лучшее за этот месяц</h1>
-                <h2>{{track.title}}</h2>
-                <p>{{track.artists}}</p>
+                <h2>#</h2>
+                <p>#</p>
                 <button class="save-btn">Слушать</button>
                 <a href="#">Скачать трек</a>
                 <span class="play-count">10 000 000 прослушиваний</span>
@@ -22,14 +23,26 @@
         <section class="quick-picks">
             <h3>Быстрая выборка</h3>
             <div class="song-list">
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
+                {% for song in quick_picks %}
+                    <div class="song-item">
+                        {% if song.cover %}
+                            <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
+                        {% endif %}
+                        <div class="song-info">
+                            <h4>{{ song.title }}</h4>
+                            <span>{{ song.artist }}</span><br>
+                            <audio controls>
+                                <source src="{{ song.file.url }}" type="audio/mpeg">
+                                Ваш браузер не поддерживает аудиоплеер.
+                            </audio>
+                            <a href="{{ song.file.url }}" download>Скачать</a>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </section>
 
-        <section class="favorite-music">
+        <!--<section class="favorite-music">
             <h3>Избранная музыка</h3>
             <div class="song-list">
                 <div class="song-item">Название мелодии<br><span>Автор</span></div>
@@ -47,6 +60,6 @@
                 <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
                 <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
             </div>
-        </section>
+        </section> -->
     </div>
 {% endblock %}

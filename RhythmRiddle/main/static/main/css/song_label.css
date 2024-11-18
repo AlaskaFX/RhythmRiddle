@@ -1,0 +1,29 @@
+
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.song-cover {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.song-info {
+    flex-grow: 1;
+}
+
+audio {
+    margin-top: 10px;
+}

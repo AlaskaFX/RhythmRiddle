@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
-from django.conf.global_settings import LOGIN_URL
+from django.conf.global_settings import LOGIN_URL, MEDIA_URL, MEDIA_ROOT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -124,3 +124,6 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
+
+MEDIA_URL = '/songs/'
+MEDIA_ROOT = BASE_DIR / ''

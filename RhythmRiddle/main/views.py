@@ -2,6 +2,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Song
+import random
 
 
 @login_required
@@ -12,7 +14,15 @@ def search(request):
     return render(request, 'main/search.html')
 
 def feed(request):
-    return render(request, 'main/feed.html')
+    songs = list(Song.objects.all())
+    random_songs = random.sample(songs, min(len(songs), 4))
+
+    context = {
+        'track': random_songs[0] if random_songs else None,
+        'quick_picks': random_songs,
+    }
+
+    return render(request, 'main/feed.html', context)
 
 @login_required
 def playlists(request):

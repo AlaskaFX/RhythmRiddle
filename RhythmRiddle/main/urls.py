@@ -6,7 +6,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('/puzzle', views.puzzle, name='puzzle'), # Пазлы
+
     path('/search', views.search, name='search'), # Поиск
+    path('/get_quiz', views.get_quiz, name='get_quiz'), # Выбор задания
+    path('/update_stats', views.update_user_stats, name='update_stats'), # Обновление статистики пользователя
+
     path('', views.feed, name='feed'), # Главное
     path('/playlists', views.playlists, name='playlists'), # Плейлисты
     path('/subscription', views.subscription, name='subscription'), # Подписка

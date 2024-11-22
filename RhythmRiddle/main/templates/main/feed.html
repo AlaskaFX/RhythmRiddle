@@ -31,11 +31,11 @@
                         <div class="song-info">
                             <h4>{{ song.title }}</h4>
                             <span>{{ song.artist }}</span><br>
+                            <a href="{{ song.file.url }}" download class="download-button">Скачать</a>
                             <audio controls>
                                 <source src="{{ song.file.url }}" type="audio/mpeg">
-                                Ваш браузер не поддерживает аудиоплеер.
                             </audio>
-                            <a href="{{ song.file.url }}" download>Скачать</a>
+
                         </div>
                     </div>
                 {% endfor %}

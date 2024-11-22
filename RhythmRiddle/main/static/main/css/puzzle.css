@@ -150,3 +150,7 @@ main {
 .volume-control input[type="range"] {
     width: 100px;
 }
+
+.task-placeholder.active {
+    border: 2px solid black;
+}

@@ -1,10 +1,10 @@
+
 * {
     position:relative;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-
 }
 
 body {
@@ -13,6 +13,7 @@ body {
     justify-content: center;
     height: 100vh;
 }
+
 .container
 {
     position: relative;
@@ -26,14 +27,11 @@ body {
     top: 50px;
 }
 
-
 h1 {
     margin-bottom: 10px;
     color: #333;
     margin-left:px;
 }
-
-
 
 form {
     display: relative;
@@ -58,7 +56,6 @@ input {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-
 }
 
 input:focus {

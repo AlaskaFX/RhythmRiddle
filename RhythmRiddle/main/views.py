@@ -55,7 +55,32 @@ def update_user_stats(request):
     })
 
 def search(request):
-    return render(request, 'main/search.html')
+    query = request.GET.get('q', '')
+    genre_filter = request.GET.get('genre', '')
+    artist_filter = request.GET.get('artist', '')
+
+    # Фильтрация песен по запросу
+    songs = Song.objects.all()
+
+    if query:
+        songs = songs.filter(title__icontains=query) | songs.filter(artist__icontains=query)
+
+    if genre_filter:
+        songs = songs.filter(song_genre=genre_filter)
+
+    if artist_filter:
+        songs = songs.filter(artist__icontains=artist_filter)
+
+    # Получаем уникальные жанры и исполнителей
+    unique_genres = Song.objects.values_list('song_genre', flat=True).distinct()
+    unique_artists = Song.objects.values_list('artist', flat=True).distinct()
+
+    return render(request, 'main/search.html', {
+        'songs': songs,
+        'query': query,
+        'unique_genres': unique_genres,
+        'unique_artists': unique_artists,
+    })
 
 def feed(request):
     songs = list(Song.objects.all())

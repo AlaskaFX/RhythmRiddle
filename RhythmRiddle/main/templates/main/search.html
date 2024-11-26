@@ -4,29 +4,46 @@
     <link rel="stylesheet" href="{% static 'main/css/search.css' %}">
 {% endblock %}
 {% block content %}
-    <div>
-        <div class="music-list">
-            <div class="music-item">
-                <h3>Название трека 1</h3>
-                <p>Исполнитель: Артист 1</p>
-            </div>
-            <div class="music-item">
-                <h3>Название трека 2</h3>
-                <p>Исполнитель: Артист 2</p>
-            </div>
-            <div class="music-item">
-                <h3>Название трека 2</h3>
-                <p>Исполнитель: Артист 2</p>
-            </div>
-            <div class="music-item">
-                <h3>Название трека 2</h3>
-                <p>Исполнитель: Артист 2</p>
-            </div>
-            <div class="music-item">
-                <h3>Название трека 2</h3>
-                <p>Исполнитель: Артист 2</p>
-            </div>
-        </div>
+<div class="search-container">
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q" placeholder="Поиск по названию или исполнителю" value="{{ query }}" oninput="this.form.submit()">
+        <button type="submit">Поиск</button>
+    </form>
+
+    <div class="filter-container">
+        <select name="genre" onchange="this.form.submit()">
+            <option value="">Выберите жанр</option>
+            {% for genre in unique_genres %}
+                <option value="{{ genre }}" {% if genre == request.GET.genre %} selected {% endif %} > {{ genre }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="artist" onchange="this.form.submit()">
+            <option value="">Выберите исполнителя</option>
+            {% for artist in unique_artists %}
+                <option value="{{ artist }}" {% if artist == request.GET.artist %} selected {% endif %} > {{ artist }}</option>
+            {% endfor %}
+        </select>
     </div>
+
+    <div class="song-list">
+        {% for song in songs %}
+            <div class="song-item">
+                {% if song.cover %}
+                    <img src="{{ song.cover.url }}" alt="{{ song.title }} cover" class="cover-image">
+                {% endif %}
+                <h3>{{ song.title }}</h3>
+                <p>{{ song.artist }}</p>
+                <audio controls>
+                    <source src="{{ song.file.url }}" type="audio/mpeg">
+                    Ваш браузер не поддерживает аудиоплеер.
+                </audio>
+                <a href="{{ song.file.url }}" download>Скачать</a>
+            </div>
+        {% empty %}
+            <p>Нет результатов для отображения.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
 

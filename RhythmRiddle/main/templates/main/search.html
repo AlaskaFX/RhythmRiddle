@@ -7,17 +7,17 @@
 <div class="search-container">
     <form method="GET" action="{% url 'search' %}">
         <input type="text" name="q" placeholder="Поиск по названию или исполнителю" value="{{ query }}" oninput="this.form.submit()">
-        <button type="submit">Поиск</button>
+        <button type="submit" class="search-btn">Поиск</button>
 
         <div class="filter-container">
-            <select name="genre" onchange="this.form.submit()">
+            <select name="genre" onchange="this.form.submit()" class="genre">
                 <option value="">Выберите жанр</option>
                 {% for genre, label in unique_genres.items %}
                     <option value="{{ genre }}" {% if genre == request.GET.genre %} selected {% endif %} > {{ label }}</option>
                 {% endfor %}
             </select>
 
-            <select name="artist" onchange="this.form.submit()">
+            <select name="artist" onchange="this.form.submit()" class="artist">
                 <option value="">Выберите исполнителя</option>
                 {% for artist in unique_artists %}
                     <option value="{{ artist }}" {% if artist == request.GET.artist %} selected {% endif %} > {{ artist }}</option>

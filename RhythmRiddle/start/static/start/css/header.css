@@ -110,3 +110,8 @@ select#country {
         display: none;
     }
 }
+
+.lang {
+    background:green;
+    color:green;
+}

@@ -9,6 +9,46 @@ h1 {
     font-size: 2em;
     color: #333;
 }
+.search-container {
+    position:relative;
+}
+
+.song-list {
+    position:relative;
+    top:20px;
+
+}
+
+.song-item {
+    float: left;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #666;
+    height: 25%;
+    width: 25%;
+    padding:10px;
+}
+
+.cover-image {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+input {
+    margin-left:250px;
+    width:65%;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: black;
+    border: 0.1rem solid;;
+    border-radius: 20px;
+    cursor: pointer;
+}
 
 #search {
     padding: 10px;
@@ -16,6 +56,58 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 250px;
+}
+
+.search-btn {
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #0088FF;
+}
+
+.artist {
+    position:relative;
+    margin-left:150px;
+    top:10px;
+    width:13%;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: black;
+    border: 0.1rem solid;;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.genre {
+    position:relative;
+    margin-left:600px;
+    top:10px;
+    width:10%;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: black;
+    border: 0.1rem solid;;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.add-favorite-btn {
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.add-favorite-btn:hover {
+    background-color: #0088FF;
 }
 
 .music-list {

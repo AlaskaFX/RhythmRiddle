@@ -1,3 +1,6 @@
+.quick-pick {
+    display:flex;
+}
 
 .song-list li{
     display: flex;
@@ -6,42 +9,65 @@
 }
 
 .song-item {
-    display: flex;
-    align-items: center;
+    width: fit-content;
+    height: fit-content;
     border: 1px solid #ccc;
-    padding: 50px;
+    padding: 10px;
     border-radius: 20px;
     background-color: #f9f9f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.song-cover {
-    margin-right: 15px;
-    margin-left: -25px;
-    border-radius: 10px;
+button.add-favorite-btn {
+    margin-left:10px;
 }
 
-.song-info {
-    margin-top: 100px;
-    text-align: left;
+a.download-button {
+    position:relative;
+    top:10px;
 }
 
 audio {
-    margin-top: 10px;
-    margin-left: -90px;
+    position:relative;
+    top:20px;
 }
 
+.add-favorite-btn-2 {
+    position:relative;
+    top:20px;
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+
 .download-button {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: space-around;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 10px;
-    transition: background-color 0.3s;
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
 }
 
 .download-button:hover {
-    background-color: #0056b3;
+    background-color: #0088FF;
+}
+
+.add-favorite-btn-1 {
+    position:relative;
+    top:20px;
+    padding: 10px 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left:50px;
+}
+
+.add-favorite-btn:hover {
+    background-color: #0088FF;
 }

@@ -18,12 +18,14 @@ body {
 
 .action-btn
 {
+    position:relative;
     padding: 10px 20px;
     background-color: #00A0FF;
     color: #fff;
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    top:10px;
 }
 
 .action-btn:hover

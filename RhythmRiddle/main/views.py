@@ -14,7 +14,7 @@ def search(request):
     return render(request, 'main/search.html')
 
 def feed(request):
-    track_list = client.tracks(['59140251:1']) # Мой номер 245
+    track_list = client.tracks(['59140251:1']) # Бью людей
     # track_list = client.tracks(['25996081:11277'])  # Владимирский централ
     track_info = {
         'title': track_list[0].title,
@@ -25,6 +25,16 @@ def feed(request):
     }
     return render(request, 'main/feed.html', {'track': track_info})
 
+def search(request):
+    track_list = client.tracks(['5914025:1']) # Мой номер 245
+    # track_list = client.tracks(['25996081:11277'])  # Владимирский централ
+    track_info = {
+        'title': track_list[0].title,
+        'artists': ', '.join(artist.name for artist in track_list[0].artists),
+        # 'duration': f"{track_list[0].duration_ms // 60000}:{(track_list[0].duration_ms // 1000) % 60:02d}",
+        'track_id': track_list[0],
+    }
+    return render(request, 'main/search.html', {'track': track_info})
 
 def download_music(request):
     track_list = client.tracks(['59140251:1'])

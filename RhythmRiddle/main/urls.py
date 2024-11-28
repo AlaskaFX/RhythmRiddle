@@ -18,4 +18,7 @@ urlpatterns = [
     path('/data', views.data, name='account_data'), # Профиль
     path('/card', views.card, name='account_card'), # Данные карты
 
+    path('/favorites', views.favorites, name='favorites'), # Избранные
+    path('/add_favorite/<int:song_id>/', views.add_favorite, name='add_favorite'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

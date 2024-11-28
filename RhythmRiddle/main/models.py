@@ -7,15 +7,13 @@ class Song(models.Model):
     SONG_GENRE = [
         ('rock', 'Рок'),
         ('romance', 'Шансон'),
-        ('hip_hop', 'Хип-хоп'),
         ('disco', 'Диско'),
         ('dance', 'Танец'),
         ('pop', 'Поп'),
-        ('ballad', 'Баллада'),
         ('rap', 'Рэп'),
-        ('funk', 'Фанк'),
-        ('jazz', 'Джаз'),
         ('house', 'Хаус'),
+        ('edm', 'Электро'),
+        ('bandstand', 'Эстрада'),
     ]
 
     title = models.CharField(max_length=255)
@@ -64,14 +62,13 @@ class Stats(models.Model):
     USERS_GENRE = [
         ('rock', 'Рок'),
         ('romance', 'Шансон'),
-        ('hip_hop', 'Хип-хоп'),
         ('disco', 'Диско'),
         ('dance', 'Танец'),
         ('pop', 'Поп'),
-        ('ballad', 'Баллада'),
         ('rap', 'Рэп'),
-        ('funk', 'Фанк'),
-        ('jazz', 'Джаз'),
+        ('house', 'Хаус'),
+        ('edm', 'Электро'),
+        ('bandstand', 'Эстрада'),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -81,7 +78,6 @@ class Stats(models.Model):
     user_genre = models.CharField(max_length=10, choices=USERS_GENRE, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Сбрасываем количество попыток в начале нового дня
         if self.last_reset_date != timezone.now().date():
             self.attempts = 3
             self.last_reset_date = timezone.now().date()
@@ -93,3 +89,15 @@ class Stats(models.Model):
     class Meta:
         verbose_name = 'Статистика'
         verbose_name_plural = 'Статистика'
+
+class FavoriteSong(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'song')
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
+
+    def __str__(self):
+        return f"{self.user.username} - {self.song.title}"

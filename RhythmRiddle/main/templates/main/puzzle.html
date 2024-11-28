@@ -3,10 +3,8 @@
 {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'main/css/puzzle.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/quiz_choose.css' %}">
-
 {% endblock %}
 {% block content %}
-
     <div>
         <section class="task-selection">
             <button class="stats-button">Статистика</button>
@@ -44,10 +42,10 @@
                                 <img src="{% static 'main/img/placeholder.png' %}" alt="Плейcхолдер" id="gameImage">
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" data-result="win">Кнопка 1</button>
-                                <button class="action-btn" data-result="lose">Кнопка 2</button>
-                                <button class="action-btn" data-result="lose">Кнопка 3</button>
-                                <button class="action-btn" data-result="lose">Кнопка 4</button>
+                                <button class="action-btn" data-result='win'>Кнопка 1</button>
+                                <button class="action-btn" data-result='lose'>Кнопка 2</button>
+                                <button class="action-btn" data-result='lose'>Кнопка 3</button>
+                                <button class="action-btn" data-result='lose'>Кнопка 4</button>
                             </div>
                         </div>
 
@@ -122,10 +120,9 @@
                                     'X-CSRFToken': '{{ csrf_token }}',
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({ result: "start" })
+                                body: JSON.stringify({ result: 'result' })
                             });
 
-                            // Вставьте код для получения задания
                             fetch(`get_quiz?type=${selectedType}&difficulty=${selectedDifficulty}`)
                                 .then(response => {
                                     if (!response.ok) {
@@ -136,12 +133,24 @@
                                 .then(quiz => {
                                     if (quiz) {
                                         const actionButtons = document.querySelectorAll('.action-buttons .action-btn');
+                                        const answers = [quiz.correct_answer, ...quiz.wrong_answers];
+
+                                        function shuffleArray(array) {
+                                            for (let i = array.length - 1; i > 0; i--) {
+                                                const j = Math.floor(Math.random() * (i + 1));
+                                                [array[i], array[j]] = [array[j], array[i]];
+                                            }
+                                            return array;
+                                        }
+
+                                        const shuffledAnswers = shuffleArray(answers);
+
                                         actionButtons.forEach((button, index) => {
-                                            // Заполняем кнопки с ответами
-                                            button.textContent = index === 0 ? quiz.correct_answer : quiz.wrong_answers[index - 1];
+                                            button.textContent = shuffledAnswers[index];
+                                            button.dataset.result = (shuffledAnswers[index] === quiz.correct_answer) ? 'win' : 'lose';
                                         });
 
-                                        backgroundMusic = new Audio(quiz.song_file); // Загрузка аудиофайла
+                                        backgroundMusic = new Audio(quiz.song_file);
                                         backgroundMusic.play();
                                     } else {
                                         alert('Не удалось получить задание.');
@@ -165,7 +174,7 @@
 
                                 const result = button.dataset.result;
 
-                                buttonSound = new Audio(button.dataset.result === "win"
+                                buttonSound = new Audio(button.dataset.result === 'win'
                                     ? "{% static 'main/audio/win-sound.wav' %}"
                                     : "{% static 'main/audio/lose-sound.wav' %}");
                                 buttonSound.play();
@@ -173,11 +182,10 @@
                                 document.querySelector('.game-content').style.display = 'none';
 
                                 const resultMessage = document.querySelector('.result-message');
-                                resultMessage.textContent = button.dataset.result === "win" ? "Вы победили!" : "Вы проиграли!";
+                                resultMessage.textContent = button.dataset.result === 'win' ? "Вы победили!" : "Вы проиграли!";
                                 resultMessage.style.display = 'block';
                             });
                         });
-
                     </script>
             <p class="subscription-prompt">
                 С нашей подпиской, вы получите возможность выполнять больше ежедневных и ещё большими наградами.

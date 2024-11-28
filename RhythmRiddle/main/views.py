@@ -2,8 +2,8 @@
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
-from django.shortcuts import render
-from .models import Song, Stats, Quiz
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Song, Stats, Quiz, FavoriteSong
 import random
 
 @login_required
@@ -46,6 +46,9 @@ def update_user_stats(request):
     elif result == 'lose':
         stats.points -= 10
 
+    if stats.points < 0:
+        stats.points = 0
+
     stats.save()
 
     return JsonResponse({
@@ -59,7 +62,6 @@ def search(request):
     genre_filter = request.GET.get('genre', '')
     artist_filter = request.GET.get('artist', '')
 
-    # Фильтрация песен по запросу
     songs = Song.objects.all()
 
     if query:
@@ -71,20 +73,25 @@ def search(request):
     if artist_filter:
         songs = songs.filter(artist__icontains=artist_filter)
 
-    # Получаем уникальные жанры и исполнителей
     unique_genres = Song.objects.values_list('song_genre', flat=True).distinct()
+    genre_dict = dict(Song.SONG_GENRE)
+    filtered_genres = {genre: genre_dict[genre] for genre in unique_genres if genre in genre_dict}
+
     unique_artists = Song.objects.values_list('artist', flat=True).distinct()
 
     return render(request, 'main/search.html', {
         'songs': songs,
         'query': query,
-        'unique_genres': unique_genres,
+        'unique_genres': filtered_genres,
         'unique_artists': unique_artists,
     })
 
 def feed(request):
     songs = list(Song.objects.all())
-    random_songs = random.sample(songs, min(len(songs), 4))
+    if not songs:
+        random_songs = []
+    else:
+        random_songs = random.sample(songs, min(len(songs), 4))
 
     context = {
         'track': random_songs[0] if random_songs else None,
@@ -97,9 +104,21 @@ def feed(request):
 def playlists(request):
     return render(request, 'main/playlists.html')
 
+@login_required
+def add_favorite(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    FavoriteSong.objects.get_or_create(user=request.user, song=song)
+
+    next_url = request.META.get('HTTP_REFERER', 'feed')
+    return redirect(next_url)
 
 def subscription(request):
     return render(request, 'main/subscription.html')
+
+@login_required
+def favorites(request):
+    favorite_songs = FavoriteSong.objects.filter(user=request.user).select_related('song')
+    return render(request, 'main/favorites.html', {'favorite_songs': favorite_songs})
 
 ###
 

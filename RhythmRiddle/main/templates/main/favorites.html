@@ -1,0 +1,27 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'main/css/favorites.css' %}">
+{% endblock %}
+{% block content %}
+    <h1>Избранные песни</h1>
+    <div class="favorites-list">
+        {% for favorite in favorite_songs %}
+            <div class="favorite-item">
+                {% if favorite.song.cover %}
+                    <img src="{{ favorite.song.cover.url }}" alt="Обложка {{ favorite.song.title }}" class="song-cover">
+                {% endif %}
+                <div class="song-info">
+                    <h4>{{ favorite.song.title }}</h4>
+                    <span>{{ favorite.song.artist }}</span><br>
+                    <a href="{{ favorite.song.file.url }}" download class="download-button">Скачать</a>
+                    <audio controls>
+                        <source src="{{ favorite.song.file.url }}" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        {% empty %}
+            <p>У вас нет избранных песен.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

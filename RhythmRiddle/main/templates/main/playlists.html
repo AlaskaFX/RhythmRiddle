@@ -4,27 +4,60 @@
     <link rel="stylesheet" href="{% static 'main/css/playlists.css' %}">
 {% endblock %}
 {% block content %}
-    <div>
-        <section class="playlists">
-            <h2>Мои плейлисты</h2>
-            <div class="playlist-grid">
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
+    <h1>Мои плейлисты</h1>
+    <div class="playlists">
+        {% for playlist in my_playlists %}
+            <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
+                <img src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+                <div class="playlist-info">
+                    <h4>{{ playlist.title }}</h4>
+                    <p>{{ playlist.owner.username }}</p>
+                </div>
             </div>
-
-            <h2>Общие плейлисты</h2>
-            <div class="playlist-grid">
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-                <div class="playlist-card">Название плейлиста<br>Авторы</div>
-            </div>
-
-            <button class="create-playlist">Создать новый плейлист</button>
-        </section>
+        {% empty %}
+            <p>У вас нет никаких плейлистов.</p>
+        {% endfor %}
     </div>
+
+    <h1>Общие плейлисты</h1>
+    <div class="playlists">
+        {% for playlist in shared_playlists %}
+            <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
+                <img src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+                <div class="playlist-info">
+                    <h4>{{ playlist.title }}</h4>
+                    <p>{{ playlist.owner.username }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>У вас нет общих плейлистов.</p>
+        {% endfor %}
+    </div>
+
+    <button id="createPlaylistBtn">Создать плейлист</button>
+
+    <div id="createPlaylistModal" class="modal">
+        <div class="modal-content">
+            <h2>Создать новый плейлист</h2>
+            <form id="createPlaylistForm" method="POST" enctype="multipart/form-data" action="{% url 'create_playlist' %}">
+                {% csrf_token %}
+                <label for="playlist-title">Название:</label>
+                <input type="text" id="playlist-title" name="title" required>
+                <label for="playlist-cover">Обложка:</label>
+                <input type="file" id="playlist-cover" name="cover" required>
+                <button type="submit">Создать</button>
+            </form>
+            <button id="closeModal">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('createPlaylistBtn').onclick = function() {
+            document.getElementById('createPlaylistModal').style.display = 'block';
+        };
+
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('createPlaylistModal').style.display = 'none';
+        };
+    </script>
 {% endblock %}

@@ -21,6 +21,7 @@ class Song(models.Model):
     song_genre = models.CharField(max_length=10, choices=SONG_GENRE, null=True, blank=True)
     file = models.FileField(upload_to='full_songs/')
     cover = models.ImageField(upload_to='covers/', blank=True, null=True)
+    play_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.title} - {self.artist}"
@@ -75,7 +76,9 @@ class Stats(models.Model):
     points = models.IntegerField(default=100)
     attempts = models.IntegerField(default=3)
     last_reset_date = models.DateField(auto_now=True)
-    user_genre = models.CharField(max_length=10, choices=USERS_GENRE, null=True, blank=True)
+    first_user_genre = models.CharField(max_length=10, choices=USERS_GENRE, null=True, blank=True)
+    second_user_genre = models.CharField(max_length=10, choices=USERS_GENRE, null=True, blank=True)
+    third_user_genre = models.CharField(max_length=10, choices=USERS_GENRE, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.last_reset_date != timezone.now().date():
@@ -101,3 +104,16 @@ class FavoriteSong(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.song.title}"
+
+class Playlist(models.Model):
+    title = models.CharField(max_length=255)
+    cover = models.ImageField(upload_to='covers/')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    songs = models.ManyToManyField('Song', blank=True)
+
+    class Meta:
+        verbose_name = 'Плейлист'
+        verbose_name_plural = 'Плейлисты'
+
+    def __str__(self):
+        return self.title

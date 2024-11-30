@@ -3,26 +3,36 @@
 {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'start/css/index.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/song_label.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/modal.css' %}">
 {% endblock %}
 {% block content %}
     <div>
         <section class="highlight">
-        <div class="highlight-image">
-            <img src="{{ song.cover.url }}" alt="Лучшее за этот месяц">
-        </div>
-        <div class="highlight-info">
-            <h1>Лучшее за этот месяц</h1>
-            <h2>#</h2>
-            <p>#</p>
-            <button class="save-btn">Слушать</button>
-            <a href="#">Скачать трек</a>
-            <span class="play-count">10 000 000 прослушиваний</span>
-            <form action="{#}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="add-favorite-btn-1">Добавить в избранное</button>
-            </form>
-        </div>
-    </section>
+            <div class="highlight-image">
+                {% if song and song.cover %}
+                    <img src="{{ song.cover.url }}" alt="Лучшее за этот месяц">
+                {% else %}
+                    <img src="{#}" alt="Нет изображения">
+                {% endif %}
+            </div>
+            <div class="highlight-info">
+                <h1>Лучшее за этот месяц</h1>
+                <h2>{{ song.title|default:"Нет песни" }}</h2>
+                <p>{{ song.artist|default:"Нет исполнителя" }}</p>
+                <span class="popular-play-count">{{ song.play_count|default:0 }} прослушиваний</span>
+
+                {% if song %}
+                    <audio controls>
+                        <source src="{{ song.file.url }}" type="audio/mpeg">
+                        Ваш браузер не поддерживает аудио.
+                    </audio>
+                    <form action="{% url 'add_favorite' song.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="add-favorite-btn-2">Добавить в избранное</button>
+                    </form>
+                {% endif %}
+            </div>
+        </section>
 
     <section class="quick-picks">
         <div>
@@ -38,7 +48,6 @@
                                 <div class="song-info">
                                     <h4>{{ song.title }}</h4>
                                     <span>{{ song.artist }}</span><br>
-
                                     <audio controls>
                                         <source src="{{ song.file.url }}" type="audio/mpeg">
                                     </audio>
@@ -59,24 +68,83 @@
         </div>
     </section>
 
-        <!--<section class="favorite-music">
-            <h3>Избранная музыка</h3>
-            <div class="song-list">
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-                <div class="song-item">Название мелодии<br><span>Автор</span></div>
-            </div>
-        </section>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.song-item audio').on('play', function() {
+                    const songId = $(this).closest('.song-info').find('form').attr('action').split('/').slice(-2, -1)[0];
 
-        <section class="recommended-playlists">
-            <h3>Рекомендованные плейлисты</h3>
-            <div class="playlist-list">
-                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
-                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
-                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
-                <div class="playlist-item">Название мелодии<br><span>Автор</span></div>
+                    $.ajax({
+                        url: "{% url 'increment_play_count' 0 %}".replace('0', songId),
+                        method: 'POST',
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                    });
+                });
+
+                $('audio').on('play', function() {
+                    if ($(this).closest('.highlight-info').length > 0) {
+                        const songId = "{{ song.id }}";
+
+                        $.ajax({
+                            url: "{% url 'increment_play_count' 0 %}".replace('0', songId),
+                            method: 'POST',
+                            data: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                        });
+                    }
+                });
+            });
+        </script>
+
+        {% if stats.first_user_genre is None %}
+            <div id="genreModal" class="modal">
+                <div class="modal-content">
+                    <h2>Выберите жанр</h2>
+                    <p>Выберите хотя бы один жанр. Максимум можно выбрать три.</p>
+                    <div id="genreSelection">
+                        {% for genre, genre_display in stats.USERS_GENRE %}
+                            <div class="genre-placeholder" data-genre="{{ genre }}">{{ genre_display }}</div>
+                        {% endfor %}
+                    </div>
+                    <button id="doneButton">Готово</button>
+                </div>
             </div>
-        </section> -->
+
+            <script>
+                document.getElementById('genreModal').style.display = "block";
+
+                let selectedGenres = [];
+
+                document.querySelectorAll('.genre-placeholder').forEach(function(element) {
+                    element.addEventListener('click', function() {
+                        const genre = this.getAttribute('data-genre');
+                        if (selectedGenres.includes(genre)) {
+                            selectedGenres = selectedGenres.filter(item => item !== genre);
+                            this.classList.remove('selected');
+                        } else {
+                            if (selectedGenres.length < 3) {
+                                selectedGenres.push(genre);
+                                this.classList.add('selected');
+                            }
+                        }
+                    });
+                });
+
+                document.getElementById('doneButton').addEventListener('click', function() {
+                    const csrftoken = '{{ csrf_token }}';
+                    fetch('{% url "update_genres" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: JSON.stringify({ genres: selectedGenres })
+                    }).then(() => location.reload());
+                });
+            </script>
+        {% endif %}
     </div>
 {% endblock %}

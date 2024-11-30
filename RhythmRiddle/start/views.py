@@ -2,7 +2,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from .forms import LoginUserForm, RegistrationForm
-
+from main.models import Stats
 
 def index(request):
     if request.user.is_authenticated:
@@ -47,7 +47,9 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()  # Сохраняем нового пользователя
+            # Создаем запись в Stats для нового пользователя
+            Stats.objects.create(user=user)
             return redirect('/main')
     else:
         form = RegistrationForm()

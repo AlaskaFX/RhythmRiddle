@@ -27,8 +27,8 @@ main {
 }
 
 .highlight-image img {
-    width: 100%;
-    max-width: 500px;
+    width: 200px;
+    height: 200px;
     border-radius: 20px;
     margin-left:50px;
 }
@@ -65,7 +65,7 @@ main {
     background-color: #0088FF;
 }
 
-.highlight-info .play-count {
+.highlight-info .popular-play-count {
     display: block;
     margin-top: 10px;
     color: #888;

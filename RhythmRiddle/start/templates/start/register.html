@@ -6,7 +6,6 @@
 {% block content %}
     <div class="container">
             <h1>Регистрация</h1>
-            <!---НЕ ЗАБЫТЬ ПОФИКСИТЬ СТРАНИЦУ КОГДА НЕПРАВИЛЬНЫЙ ПАРОЛЬ И ИМЯ -->
             <form method="post">
             {% csrf_token %}
             {{ form.as_p }}

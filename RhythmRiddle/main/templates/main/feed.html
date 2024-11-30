@@ -68,6 +68,29 @@
         </div>
     </section>
 
+    <section class="shared-playlists">
+        <h3>Общие плейлисты</h3>
+        <div class="playlist-list">
+            {% if shared_playlists %}
+                {% for playlist in shared_playlists %}
+                    <div class="playlist-item">
+                        <a href="{% url 'playlist_detail' playlist.id %}">
+                            <img style="width: 100%" src="{{ playlist.cover.url }}" alt="Обложка плейлиста {{ playlist.title }}">
+                        </a>
+                        <div class="playlist-info">
+                            <h4>{{ playlist.title }}</h4>
+                            <span>Автор: {{ playlist.owner.username }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Нет доступных общих плейлистов.</p>
+                {% endfor %}
+            {% else %}
+                <p>Нет доступных общих плейлистов.</p>
+            {% endif %}
+        </div>
+    </section>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {

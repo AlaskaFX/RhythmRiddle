@@ -23,7 +23,6 @@ main {
     align-items: center;
     gap: 20px;
     margin-bottom: 30px;
-
 }
 
 .highlight-image img {
@@ -113,4 +112,23 @@ main {
 
 .volume-control input[type="range"] {
     width: 100px;
+}
+
+.playlist-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.playlist-item {
+    margin: 10px;
+    text-align: center;
+    width: 10%;
+}
+
+.playlist-info {
+    margin-top: 5px;
+}
+
+.shared-playlists {
+    margin-top: 200px;
 }

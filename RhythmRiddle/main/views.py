@@ -102,6 +102,7 @@ def feed(request):
 
     songs = list(Song.objects.all())
     user_playlists = Playlist.objects.filter(owner=request.user)
+    shared_playlists = Playlist.objects.exclude(owner=request.user)
 
     if not songs:
         random_songs = []
@@ -116,6 +117,7 @@ def feed(request):
         'song': top_song,
         'stats': stats,
         'user_playlists': user_playlists,
+        'shared_playlists': shared_playlists,
     }
 
     return render(request, 'main/feed.html', context)

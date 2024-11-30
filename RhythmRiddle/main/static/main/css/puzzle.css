@@ -25,15 +25,9 @@
     margin: 20px 0;
 }
 
-.task-placeholder {
-    width: 150px;
-    height: 150px;
-    background-color: #ddd;
-    border-radius: 10px;
-}
-
-.task-placeholder{
-    border-radius: 100px;
+.img-puzzle {
+    width:10%;
+    height:10%;
 }
 
 .start-task {
@@ -157,4 +151,15 @@ main {
 
 .task-placeholder.active {
     border: 2px solid black;
+}
+
+.task-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+
+.task-placeholder{
+    border-radius: 100px;
 }

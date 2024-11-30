@@ -27,17 +27,19 @@ a.download-button {
     top:10px;
 }
 
-audio {
+.audio-1 {
     position:relative;
     top:20px;
+    margin-left:40px;
 }
 
 .add-favorite-btn-2 {
     position:relative;
-    top:20px;
     padding: 10px 20px;
     background-color: #00A0FF;
     color: #fff;
+    margin-left:350px;
+    top:-35px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -58,14 +60,12 @@ audio {
 
 .add-favorite-btn-1 {
     position:relative;
-    top:20px;
     padding: 10px 20px;
     background-color: #00A0FF;
     color: #fff;
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    margin-left:50px;
 }
 
 .add-favorite-btn:hover {

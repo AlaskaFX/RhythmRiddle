@@ -22,10 +22,10 @@
                 <span class="popular-play-count">{{ song.play_count|default:0 }} прослушиваний</span>
 
                 {% if song %}
-                    <audio controls>
+                    <div class="audio-1"><audio controls>
                         <source src="{{ song.file.url }}" type="audio/mpeg">
                         Ваш браузер не поддерживает аудио.
-                    </audio>
+                    </audio></div>
                     <form action="{% url 'add_favorite' song.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="add-favorite-btn-2">Добавить в избранное</button>
@@ -53,7 +53,7 @@
                                     </audio>
                                     <form action="{% url 'add_favorite' song.id %}" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="add-favorite-btn-2">Добавить в избранное</button>
+                                        <button type="submit" class="add-favorite-btn-1">Добавить в избранное</button>
                                     </form>
                                 </div>
                             </div>

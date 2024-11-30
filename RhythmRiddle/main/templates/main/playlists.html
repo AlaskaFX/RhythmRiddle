@@ -4,34 +4,41 @@
     <link rel="stylesheet" href="{% static 'main/css/playlists.css' %}">
 {% endblock %}
 {% block content %}
-    <h1>Мои плейлисты</h1>
-    <div class="playlists">
-        {% for playlist in my_playlists %}
-            <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
-                <img src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
-                <div class="playlist-info">
-                    <h4>{{ playlist.title }}</h4>
-                    <p>{{ playlist.owner.username }}</p>
-                </div>
+    <div class="playlists-container">
+        <div class="playlists-column">
+            <h2>Общие плейлисты</h2>
+            <div class="playlists">
+                {% for playlist in shared_playlists %}
+                    <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
+                        <img style="width: 10%" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+                        <div class="playlist-info">
+                            <h4>{{ playlist.title }}</h4>
+                            <p>{{ playlist.owner.username }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>У вас нет общих плейлистов.</p>
+                {% endfor %}
             </div>
-        {% empty %}
-            <p>У вас нет никаких плейлистов.</p>
-        {% endfor %}
-    </div>
+        </div>
 
-    <h1>Общие плейлисты</h1>
-    <div class="playlists">
-        {% for playlist in shared_playlists %}
-            <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
-                <img src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
-                <div class="playlist-info">
-                    <h4>{{ playlist.title }}</h4>
-                    <p>{{ playlist.owner.username }}</p>
-                </div>
+
+        <div class="playlists-column">
+            <h2>Мои плейлисты</h2>
+            <div class="playlists">
+                {% for playlist in my_playlists %}
+                    <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
+                        <img style="width: 10%" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+                        <div class="playlist-info">
+                            <h4>{{ playlist.title }}</h4>
+                            <p>{{ playlist.owner.username }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>У вас нет никаких плейлистов.</p>
+                {% endfor %}
             </div>
-        {% empty %}
-            <p>У вас нет общих плейлистов.</p>
-        {% endfor %}
+        </div>
     </div>
 
     <button id="createPlaylistBtn">Создать плейлист</button>
@@ -45,9 +52,10 @@
                 <input type="text" id="playlist-title" name="title" required>
                 <label for="playlist-cover">Обложка:</label>
                 <input type="file" id="playlist-cover" name="cover" required>
-                <button type="submit">Создать</button>
+
             </form>
-            <button id="closeModal">Закрыть</button>
+            <div class="close-add-play"><button id="closeModal">Закрыть</button></div>
+            <button type="submit">Создать</button>
         </div>
     </div>
 

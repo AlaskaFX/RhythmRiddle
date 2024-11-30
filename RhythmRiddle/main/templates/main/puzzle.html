@@ -11,9 +11,9 @@
             <h2>Выберите задание</h2>
             <p>На сегодня осталось задания: {{ user_stats.attempts }}/3</p>
             <div class="tasks">
-                <div class="task-placeholder" data-type="title">Название</div>
-                <div class="task-placeholder" data-type="composer">Исполнитель</div>
-                <div class="task-placeholder" data-type="genre">Жанр</div>
+                <div class="task-placeholder" data-type="title"><img style="position:sticky; top:30px;width:60%" src="{% static 'main/img/musictitle.png' %}">Название</div>
+                <div class="task-placeholder" data-type="composer"><img style="position:relative; width:70%" src="{% static 'main/img/musicartist.png' %}">Исполнитель</div>
+                <div class="task-placeholder" data-type="genre"><img style="position:relative; width:80%" src="{% static 'main/img/musicgenre.png' %}">Жанр</div>
             </div>
             <div>
                 <button class="start-task">Начать задание</button>
@@ -39,9 +39,10 @@
 
                         <div class="game-content" style="display: none;">
                             <div class="image-placeholder">
-                                <img src="{#}" alt="Плейcхолдер" id="gameImage">
+
                             </div>
-                            <div class="action-buttons">
+
+                            <div class="action-buttons" >
                                 <button class="action-btn" data-result='win'>Кнопка 1</button>
                                 <button class="action-btn" data-result='lose'>Кнопка 2</button>
                                 <button class="action-btn" data-result='lose'>Кнопка 3</button>

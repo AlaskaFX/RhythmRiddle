@@ -37,8 +37,7 @@
                 <audio controls>
                     <source src="{{ song.file.url }}" type="audio/mpeg">
                     Ваш браузер не поддерживает аудиоплеер.
-                </audio>
-                <a href="{{ song.file.url }}" download>Скачать</a>
+                </audio>    
                 <form action="{% url 'add_favorite' song.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="add-favorite-btn">Добавить в избранное</button>

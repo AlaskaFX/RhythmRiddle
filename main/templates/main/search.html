@@ -1,0 +1,52 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'main/css/search.css' %}">
+{% endblock %}
+{% block content %}
+<div class="search-container">
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q" placeholder="Поиск по названию или исполнителю" value="{{ query }}" oninput="this.form.submit()">
+        <button type="submit" class="search-btn">Поиск</button>
+
+        <div class="filter-container">
+            <select name="genre" onchange="this.form.submit()" class="genre">
+                <option value="" >Выберите жанр</option>
+                {% for genre, label in unique_genres.items %}
+                    <option value="{{ genre }}" {% if genre == request.GET.genre %} selected {% endif %} > {{ label }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="artist" onchange="this.form.submit()" class="artist">
+                <option value="">Выберите исполнителя</option>
+                {% for artist in unique_artists %}
+                    <option value="{{ artist }}" {% if artist == request.GET.artist %} selected {% endif %} > {{ artist }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+
+    <div class="song-list">
+        {% for song in songs %}
+            <div class="song-item">
+                {% if song.cover %}
+                    <img src="{{ song.cover.url }}" alt="{{ song.title }} cover" class="cover-image">
+                {% endif %}
+                <h3>{{ song.title }}</h3>
+                <p>{{ song.artist }}</p>
+                <audio controls>
+                    <source src="{{ song.file.url }}" type="audio/mpeg">
+                    Ваш браузер не поддерживает аудиоплеер.
+                </audio>
+                <form action="{% url 'add_favorite' song.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="add-favorite-btn">Добавить в избранное</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>Нет результатов для отображения.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

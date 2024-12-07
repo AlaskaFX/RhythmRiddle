@@ -1,0 +1,124 @@
+
+header {
+    background-color: #ffffff;
+    border-bottom: 10px solid #e0e0e0;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    height:100px;
+    top: 0;
+    z-index: 1000;
+    border: 0.5px solid #777;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header-nav {
+    width: 100%;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link:hover {
+    background-color: #0088FF;
+    border-radius: 20px;
+    color:white;
+}
+
+.logo img {
+    width:200px;
+    height:100px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #00A0FF;
+    top:20px;
+    position:relative;
+}
+
+.logo {
+    width:200px;
+    height:100px;
+
+}
+
+.header-nav .menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    justify-content:center;
+    width:80%;
+    margin-left:330px;
+    position:relative;
+    top:-50px;
+}
+
+header-nav .menu li {
+    display: inline;
+}
+
+.header-nav .menu li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.header-nav .menu li a:hover {
+    color: #0077cc;
+    transform: scale(1.05);
+}
+
+select#country {
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 40px;
+    margin-right:10px;
+}
+
+.header-language:hover {
+    color: #0077cc;
+}
+
+.header-user-icon img {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    float:right;
+}
+
+@media (max-width: 768px) {
+    header-nav .menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header-language, .user-icon {
+        display: none;
+    }
+}
+
+.lang {
+    background:green;
+    color:green;
+}
+
+.nav-link.active {
+    background-color: #007BFF;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 4px;
+}

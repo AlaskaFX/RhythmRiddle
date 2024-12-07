@@ -1,0 +1,178 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.subscription-status {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.subscription-status h1 {
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+.subscription-status p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.subscription-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cancel-btn, .change-btn {
+    height:50px;
+    width:250px;
+    background-color: #00A0FF;
+    color: #fff;
+    top:100px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    border: 1px solid #0088FF;
+}
+
+.cancel-btn:hover, .change-btn:hover {
+    background-color: #0088FF;
+}
+
+.subscribe-btn1 {
+    position:relative;
+    height:50px;
+    width:200px;
+    background-color: #00A0FF;
+    color: #fff;
+    top:40px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    border: 1px solid #0088FF;
+    text-align:center;
+}
+
+.subscribe-btn2 {
+    position:relative;
+    height:50px;
+    width:200px;
+    background-color: #00A0FF;
+    color: #fff;
+    top:1px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    border: 1px solid #0088FF;
+    text-align:center;
+}
+
+.subscribe-btn1:hover {
+    background-color: #0088FF;
+}
+
+.subscribe-btn2:hover {
+    background-color: #0088FF;
+}
+
+.promo-text {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.toggle-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.toggle-options button {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.toggle-options button:hover {
+    background-color: #0088FF;
+}
+
+.plans {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.plan {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.plan h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.discount-price {
+    font}
+
+
+
+
+.faq {
+  width: 80%;
+  margin: 0 auto;
+}
+
+details {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+details[open] {
+  background-color: #eef;
+}

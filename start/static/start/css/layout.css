@@ -1,0 +1,41 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+nav .menu {
+    display: flex;
+    list-style: none;
+}
+
+nav .menu li {
+    margin: 0 15px;
+    /*display: inline-block;
+    padding: 10px 20px; /
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #999;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; */
+}
+
+nav .menu li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.language {
+    font-size: 14px;
+}

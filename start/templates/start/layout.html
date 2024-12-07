@@ -1,0 +1,74 @@
+    {% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'start/css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'start/css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'start/css/layout.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
+    {% block extrastyles %}
+    {% endblock %}
+
+</head>
+<body>
+<header>
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="{% url 'index' %}">
+            <img src="{% static 'start/img/rhythmeriddle.png' %}">
+            </a>
+        </div>
+        <ul class="menu">
+            <li><a href="{% url 'puzzle' %}" class="nav-link">Пазлы</a></li>
+            <li><a href="{% url 'search' %}" class="nav-link">Музыка</a></li>
+            <li><a href="{% url 'feed' %}" class="nav-link">Главная</a></li>
+            <li><a href="{% url 'playlists' %}" class="nav-link">Плейлисты</a></li>
+            <li><a href="{% url 'subscription' %}" class="nav-link">Подписка</a></li>
+        </ul>
+
+    </nav>
+    <script src="script.js"></script>
+
+    <select id="country">
+        <option value="russia">Россия</option>
+        <option value="usa">США</option>
+    </select>
+    <div class="auth-button">
+        <a href="{% url 'login' %}" class="nav-link active">Войти</a>
+    </div>
+    <div class="registration-button">
+        <a href="{% url 'register' %}" class="nav-link active">Регистрация</a>
+    </div>
+</header>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img src="{% static 'start/img/rhythmeriddle.png' %}">
+        </div>
+        <div class="footer-links">
+            <a href="{% url 'about' %}">О нас</a>
+            <a href="{% url 'advertising' %}">Реклама</a>
+            <a href="{% url 'rules' %}">Пользовательское соглашение</a>
+            <a href="{% url 'support' %}">Поддержка</a>
+        </div>
+        <div class="footer-socials">
+            <a href="#"><img src="{% static 'start/img/yt.png' %}" alt="YouTube"></a>
+            <a href="#"><img src="{% static 'start/img/twitter.png' %}" alt="Twitter"></a>
+            <a href="#"><img src="{% static 'start/img/vk.png' %}" alt="VK"></a>
+            <a href="#"><img src="{% static 'start/img/tg1.png' %}" alt="Telegram"></a>
+        </div>
+    </div>
+    <p class="footer-copyright">РитмРиддл © 2024. Все права защищены.</p>
+</footer>
+</body>
+</html>

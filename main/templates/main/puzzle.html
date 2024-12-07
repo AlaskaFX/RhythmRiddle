@@ -1,0 +1,198 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'main/css/puzzle.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/quiz_choose.css' %}">
+{% endblock %}
+{% block content %}
+    <div>
+        <section class="task-selection">
+            <button class="stats-button">Статистика</button>
+            <h2>Выберите задание</h2>
+            <p>На сегодня осталось задания: {{ user_stats.attempts }}/3</p>
+            <div class="tasks">
+                <div class="task-placeholder" data-type="title" style=" overflow: hidden"><img style="position:relative; top:20px;width:60%" src="{% static 'main/img/musictitle.png' %}"><label style="position:relative; top:20px">Название</label></div>
+                <div class="task-placeholder" data-type="composer"><img style="position:relative;top:20px;width:60%" src="{% static 'main/img/musicartist.png' %}"><label style="position:relative; top:20px">Исполнитель</label></div>
+                <div class="task-placeholder" data-type="genre"><img style="position:relative; width:80%" src="{% static 'main/img/musicgenre.png' %}"><label style="position:relative; top:-10px">Жанр</label></div>
+            </div>
+            <div>
+                <button class="start-task">Начать задание</button>
+                  <div class="modal-overlay" id="quizModal">
+                    <div class="modal-content">
+                                <span class="close-modal">&times;</span>
+
+                        <div class="modal">
+
+		                        <div class="overlay"></div>
+                            </div>
+                        <h2>Сложность задания</h2>
+                        <div class="selection-menu">
+                            <select id="difficulty">
+                                    <option value="easy">Легко</option>
+                                    <option value="hard">Тяжело</option>
+                            </select>
+                        </div>
+                        <div class="modal-buttons">
+                            <button class="start-modal-btn">Начать</button>
+                            <button class="close-modal-btn">Отмена</button>
+                        </div>
+
+                        <div class="game-content" style="display: none;">
+                            <div class="image-placeholder">
+
+                            </div>
+
+                            <div class="action-buttons" >
+                                <button class="action-btn" data-result='win'>Кнопка 1</button>
+                                <button class="action-btn" data-result='lose'>Кнопка 2</button>
+                                <button class="action-btn" data-result='lose'>Кнопка 3</button>
+                                <button class="action-btn" data-result='lose'>Кнопка 4</button>
+                            </div>
+                        </div>
+
+                        <div class="result-message" style="display: none;"></div>
+
+                    </div>
+                  </div>
+                    <script>
+                        let backgroundMusic;
+
+                        function resetGame() {
+                            document.querySelector('.game-content').style.display = 'none';
+                            document.querySelector('.result-message').style.display = 'none';
+                            document.querySelector('.selection-menu').style.display = 'block';
+                            document.querySelector('.modal-buttons').style.display = 'block';
+                        }
+
+                        const taskPlaceholders = document.querySelectorAll('.task-placeholder');
+                        taskPlaceholders.forEach(placeholder => {
+                            placeholder.addEventListener('click', function() {
+                                taskPlaceholders.forEach(ph => ph.classList.remove('active'));
+                                this.classList.add('active');
+                            });
+                        });
+
+                        const modal = document.getElementById("quizModal");
+                        const openModalBtn = document.querySelector(".start-task");
+                        const closeModalBtns = document.querySelectorAll(".close-modal, .close-modal-btn");
+
+                        openModalBtn.addEventListener("click", () => {
+                            modal.style.display = "flex";
+                        });
+
+                        closeModalBtns.forEach(btn => {
+                            btn.addEventListener("click", () => {
+                                stopBackgroundMusic();
+                                modal.style.display = "none";
+                                resetGame();
+                            });
+                        });
+
+                        window.addEventListener("click", (e) => {
+                            if (e.target === modal) {
+                                modal.style.display = "none";
+                                resetGame();
+                            }
+                        });
+
+                        document.querySelector(".start-modal-btn").addEventListener("click", () => {
+
+                            if ({{ user_stats.attempts }} <= 0) {
+                                alert("Попытки на сегодня исчерпаны.");
+                                return;
+                            }
+
+                            const activePlaceholder = document.querySelector('.task-placeholder.active');
+                            if (!activePlaceholder) {
+                                alert("Пожалуйста, выберите задание.");
+                                return;
+                            }
+
+                            const selectedType = document.querySelector('.task-placeholder.active').dataset.type;
+                            const selectedDifficulty = document.getElementById('difficulty').value;
+
+                            document.querySelector('.selection-menu').style.display = 'none';
+                            document.querySelector('.modal-buttons').style.display = 'none';
+                            document.querySelector('.game-content').style.display = 'block';
+
+                            fetch(`update_stats`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}',
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ result: 'result' })
+                            });
+
+                            fetch(`get_quiz?type=${selectedType}&difficulty=${selectedDifficulty}`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(quiz => {
+                                    if (quiz) {
+                                        const actionButtons = document.querySelectorAll('.action-buttons .action-btn');
+                                        const answers = [quiz.correct_answer, ...quiz.wrong_answers];
+
+                                        function shuffleArray(array) {
+                                            for (let i = array.length - 1; i > 0; i--) {
+                                                const j = Math.floor(Math.random() * (i + 1));
+                                                [array[i], array[j]] = [array[j], array[i]];
+                                            }
+                                            return array;
+                                        }
+
+                                        const shuffledAnswers = shuffleArray(answers);
+
+                                        actionButtons.forEach((button, index) => {
+                                            button.textContent = shuffledAnswers[index];
+                                            button.dataset.result = (shuffledAnswers[index] === quiz.correct_answer) ? 'win' : 'lose';
+                                        });
+
+                                        backgroundMusic = new Audio(quiz.song_file);
+                                        backgroundMusic.play();
+                                    } else {
+                                        alert('Не удалось получить задание.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Ошибка:', error);
+                                });
+                            });
+
+                            function stopBackgroundMusic() {
+                                if (backgroundMusic) {
+                                    backgroundMusic.pause();
+                                    backgroundMusic.currentTime = 0;
+                                }
+                            }
+
+                        document.querySelectorAll('.action-btn').forEach(button => {
+                            button.addEventListener('click', () => {
+                                stopBackgroundMusic();
+
+                                const result = button.dataset.result;
+
+                                buttonSound = new Audio(button.dataset.result === 'win'
+                                    ? "{% static 'main/audio/win-sound.wav' %}"
+                                    : "{% static 'main/audio/lose-sound.wav' %}");
+                                buttonSound.play();
+
+                                document.querySelector('.game-content').style.display = 'none';
+
+                                const resultMessage = document.querySelector('.result-message');
+                                resultMessage.textContent = button.dataset.result === 'win' ? "Вы победили!" : "Вы проиграли!";
+                                resultMessage.style.display = 'block';
+                            });
+                        });
+                    </script>
+            <p class="subscription-prompt">
+                С нашей подпиской, вы получите возможность выполнять больше ежедневных и ещё большими наградами.
+                <a href="{% url 'subscription' %}">Приобрести подписку</a>
+            </p>
+            </div>
+        </section>
+    </div>
+{% endblock %}

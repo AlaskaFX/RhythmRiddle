@@ -11,9 +11,9 @@
             <h2>Выберите задание</h2>
             <p>На сегодня осталось задания: {{ user_stats.attempts }}/3</p>
             <div class="tasks">
-                <div class="task-placeholder" data-type="title"><img style="position:sticky; top:30px;width:60%" src="{% static 'main/img/musictitle.png' %}">Название</div>
-                <div class="task-placeholder" data-type="composer"><img style="position:relative; width:70%" src="{% static 'main/img/musicartist.png' %}">Исполнитель</div>
-                <div class="task-placeholder" data-type="genre"><img style="position:relative; width:80%" src="{% static 'main/img/musicgenre.png' %}">Жанр</div>
+                <div class="task-placeholder" data-type="title" style=" overflow: hidden"><img style="position:relative; top:20px;width:60%" src="{% static 'main/img/musictitle.png' %}"><label style="position:relative; top:20px">Название</label></div>
+                <div class="task-placeholder" data-type="composer"><img style="position:relative;top:20px;width:60%" src="{% static 'main/img/musicartist.png' %}"><label style="position:relative; top:20px">Исполнитель</label></div>
+                <div class="task-placeholder" data-type="genre"><img style="position:relative; width:80%" src="{% static 'main/img/musicgenre.png' %}"><label style="position:relative; top:-10px">Жанр</label></div>
             </div>
             <div>
                 <button class="start-task">Начать задание</button>
@@ -37,7 +37,7 @@
                             <button class="close-modal-btn">Отмена</button>
                         </div>
 
-                        <div class="game-content" style="display: none;">
+                        <div class="game-content" style="display: none; width:auto">
                             <div class="image-placeholder">
 
                             </div>

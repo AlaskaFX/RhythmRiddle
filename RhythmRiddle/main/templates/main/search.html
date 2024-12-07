@@ -11,7 +11,7 @@
 
         <div class="filter-container">
             <select name="genre" onchange="this.form.submit()" class="genre">
-                <option value="">Выберите жанр</option>
+                <option value="" >Выберите жанр</option>
                 {% for genre, label in unique_genres.items %}
                     <option value="{{ genre }}" {% if genre == request.GET.genre %} selected {% endif %} > {{ label }}</option>
                 {% endfor %}
@@ -37,7 +37,7 @@
                 <audio controls>
                     <source src="{{ song.file.url }}" type="audio/mpeg">
                     Ваш браузер не поддерживает аудиоплеер.
-                </audio>    
+                </audio>
                 <form action="{% url 'add_favorite' song.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="add-favorite-btn">Добавить в избранное</button>

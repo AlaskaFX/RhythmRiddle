@@ -4,9 +4,10 @@
     <link rel="stylesheet" href="{% static 'start/css/index.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/song_label.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/modal.css' %}">
+    <script src="https://unpkg.com/wavesurfer.js"></script>
 {% endblock %}
 {% block content %}
-    <div>
+    <div class="feed">
         <section class="highlight">
             <div class="highlight-image">
                 {% if song and song.cover %}
@@ -16,80 +17,529 @@
                 {% endif %}
             </div>
             <div class="highlight-info">
-                <h1>Лучшее за этот месяц</h1>
-                <h2>{{ song.title|default:"Нет песни" }}</h2>
-                <p>{{ song.artist|default:"Нет исполнителя" }}</p>
-                <span class="popular-play-count">{{ song.play_count|default:0 }} прослушиваний</span>
+    <h1>Лучшее за этот месяц</h1>
+    <h2>{{ song.title|default:"Нет песни" }}</h2>
+    <p>{{ song.artist|default:"Нет исполнителя" }}</p>
+    <span class="popular-play-count">{{ song.play_count|default:0 }} прослушиваний</span>
 
-                {% if song %}
-                    <div class="audio-1"><audio controls>
-                        <source src="{{ song.file.url }}" type="audio/mpeg">
-                        Ваш браузер не поддерживает аудио.
-                    </audio></div>
+    {% if song %}
+        <div class="highlight-player">
+            <button class="play-highlight"
+                    data-audio="{{ song.file.url }}"
+                    data-title="{{ song.title }}"
+                    data-artist="{{ song.artist }}">
+                ▶
+            </button>
+
+        </div>
+                <script>document.addEventListener("DOMContentLoaded", () => {
+    const player = WaveSurfer.create({
+        container: document.createElement("div"), // Без визуализации волны
+        waveColor: "#ddd",
+        progressColor: "#007bff",
+        responsive: true,
+        hideScrollbar: true,
+        height: 0,
+    });
+
+    // Элементы управления плеером
+    const playPauseButton = document.getElementById("play-pause");
+    const muteButton = document.getElementById("mute-unmute");
+    const progressBar = document.getElementById("progress-bar");
+    const volumeBar = document.getElementById("volume-bar");
+    const currentTimeDisplay = document.getElementById("current-time");
+    const durationDisplay = document.getElementById("duration");
+    const trackTitle = document.getElementById("track-title");
+    const currentTrackElement = document.getElementById("currentTrack");
+
+    let currentTrack = null;
+
+    // Функция форматирования времени
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+    }
+
+    // Загрузка трека
+    function loadTrack(audioSrc, title, artist) {
+        if (currentTrack === audioSrc) {
+            player.playPause(); // Если тот же трек, ставим play/pause
+        } else {
+            currentTrack = audioSrc;
+            player.load(audioSrc);
+            currentTrackElement.textContent = `${title} - ${artist}`;
+            trackTitle.textContent = title;
+        }
+        if (currentTrack && currentTrack !== audioSrc) {
+            player.stop(); // Остановить воспроизведение
+            playPauseButton.textContent = "Play"; // Сбросить кнопку
+        }
+        if (currentTrack && currentTrack !== audioSrc) {
+            player.stop(); // Остановить воспроизведение
+            playPauseButton.textContent = "Play"; // Сбросить кнопку
+        }
+    }
+
+
+    // Событие загрузки трека
+    player.on("ready", () => {
+        durationDisplay.textContent = formatTime(player.getDuration());
+        progressBar.value = 0;
+        progressBar.max = player.getDuration();
+        player.play();
+        playPauseButton.textContent = "Pause";
+    });
+
+    // Обновление текущего времени
+    player.on("audioprocess", () => {
+        const currentTime = player.getCurrentTime();
+        currentTimeDisplay.textContent = formatTime(currentTime);
+        progressBar.value = currentTime;
+    });
+
+    // Окончание трека
+    player.on("finish", () => {
+        playPauseButton.textContent = "Play";
+        progressBar.value = 0;
+        currentTimeDisplay.textContent = "0:00";
+    });
+
+    // Play/Pause
+    playPauseButton.addEventListener("click", () => {
+        player.playPause();
+        playPauseButton.textContent = player.isPlaying() ? "Pause" : "Play";
+    });
+
+    // Mute/Unmute
+    muteButton.addEventListener("click", () => {
+        player.toggleMute();
+        muteButton.textContent = player.getMute() ? "Unmute" : "Mute";
+    });
+
+    // Прогресс-бар
+    progressBar.addEventListener("input", (e) => {
+        const time = parseFloat(e.target.value);
+        player.seekTo(time / player.getDuration());
+    });
+
+    // Регулировка громкости
+    volumeBar.addEventListener("input", (e) => {
+        player.setVolume(e.target.value);
+    });
+
+
+    // Обработка кликов по трекам из highlights
+    const highlightPlayButton = document.querySelector(".play-highlight");
+    if (highlightPlayButton) {
+        highlightPlayButton.addEventListener("click", () => {
+            const audioSrc = highlightPlayButton.getAttribute("data-audio");
+            const title = highlightPlayButton.getAttribute("data-title");
+            const artist = highlightPlayButton.getAttribute("data-artist");
+            loadTrack(audioSrc, title, artist);
+        });
+    }
+});
+</script>
+
+</div>
+
+                        <!--<script src="https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/wavesurfer.esm.js"></script>
+                        <script src="{% static 'main/js/script-audio.js' %}"></script> -->
+                                    <!--<div class="custom-audio-player">
+                        <audio id="audio-{{ song.id }}" src="{{ song.file.url }}"></audio>
+                        <button class="play-pause-btn" data-id="{{ song.id }}">▶</button>
+                        <input type="range" class="progress-bar" data-id="{{ song.id }}" value="0" step="0.1">
+                        <span class="current-time">0:00</span> / <span class="duration">0:00</span>
+                        <input type="range" class="volume-control" data-id="{{ song.id }}" min="0" max="1" step="0.001" value="1">
+
+                    </div>
+
+                        <script src="{% static 'main/js/script-audio2.js' %}"></script> -->
+
+                <style>
+
+
+    </style>
+</head>
+<body>
+    <div id="audio-player" class="audio-player" >
+        <span id="currentTrack"></span>
+        <button id="play-pause">Play</button>
+        <span id="current-time">0:00</span>
+        <input type="range" id="progress-bar" min="0" max="100" value="0">
+        <span id="duration">0:00</span>
+        <button id="mute-unmute">Mute</button>
+        <input type="range" id="volume-bar" min="0" max="1" step="0.001" value="1">
+        <div id="track-title">Track Title</div>
+    </div>
+
+
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const player = WaveSurfer.create({
+            container: document.createElement("div"), // Визуализация не нужна
+            waveColor: "#ddd",
+            progressColor: "#007bff",
+            responsive: true,
+            hideScrollbar: true,
+            height: 0,
+        });
+
+        // Элементы управления
+        const playPauseButton = document.getElementById("play-pause");
+        const muteButton = document.getElementById("mute-unmute");
+        const progressBar = document.getElementById("progress-bar");
+        const volumeBar = document.getElementById("volume-bar");
+        const currentTimeDisplay = document.getElementById("current-time");
+        const durationDisplay = document.getElementById("duration");
+        const trackTitle = document.getElementById("track-title");
+        const currentTrackElement = document.getElementById("currentTrack");
+
+        // Изначальные значения
+        let currentTrack = null;
+
+        // Функция форматирования времени
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+        }
+
+        // Загрузка трека
+        function loadTrack(audioSrc, title) {
+            if (currentTrack === audioSrc) {
+                player.playPause(); // Если тот же трек, ставим play/pause
+            } else {
+                currentTrack = audioSrc;
+                player.load(audioSrc);
+                currentTrackElement.textContent = title;
+                trackTitle.textContent = title;
+
+            }
+        }
+
+        // Событие загрузки трека
+        player.on("ready", () => {
+            durationDisplay.textContent = formatTime(player.getDuration());
+            progressBar.value = 0;
+            progressBar.max = player.getDuration();
+            player.play();
+            playPauseButton.textContent = "Pause";
+        });
+
+        // Обновление текущего времени
+        player.on("audioprocess", () => {
+            const currentTime = player.getCurrentTime();
+            currentTimeDisplay.textContent = formatTime(currentTime);
+            progressBar.value = currentTime;
+        });
+
+        // Окончание трека
+        player.on("finish", () => {
+            playPauseButton.textContent = "Play";
+            progressBar.value = 0;
+            currentTimeDisplay.textContent = "0:00";
+        });
+
+        // Play/Pause
+        playPauseButton.addEventListener("click", () => {
+            player.playPause();
+            playPauseButton.textContent = player.isPlaying() ? "Pause" : "Play";
+            console.log(player)
+        });
+
+        // Mute/Unmute
+        muteButton.addEventListener("click", () => {
+            player.toggleMute();
+            muteButton.textContent = player.getMute() ? "Unmute" : "Mute";
+        });
+
+        // Прогресс-бар
+        progressBar.addEventListener("input", (e) => {
+            const time = parseFloat(e.target.value);
+            player.seekTo(time / player.getDuration());
+        });
+
+        // Регулировка громкости
+        volumeBar.addEventListener("input", (e) => {
+            player.setVolume(e.target.value);
+        });
+
+        // Обработка кликов по трекам
+        document.querySelectorAll(".track").forEach((trackElement) => {
+            trackElement.addEventListener("click", () => {
+                const audioSrc = trackElement.getAttribute("data-audio");
+                const title = trackElement.getAttribute("data-title");
+                loadTrack(audioSrc, title);
+            });
+        });
+    });
+    </script>
+
+
+                    <!--<title>WaveSurfer Audio Player</title>
+    <style>
+
+
+        .audio-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        .audio-player .volume-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audio-player .volume-slider {
+            width: 150px;
+            -webkit-appearance: none;
+            height: 6px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .audio-player .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #007BFF;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .audio-player .mute-btn {
+            font-size: 14px;
+            padding: 5px 10px;
+            background: #ff3b3b;
+            color: white;
+        }
+
+        .audio-player .mute-btn:hover {
+            background: #c70000;
+        }
+
+        .audio-player .progress-container {
+            width: 100%;
+            max-width: 300px;
+            position: relative;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .audio-player .progress-bar {
+            width: 0;
+            height: 100%;
+            background: #007BFF;
+            border-radius: 4px;
+            transition: width 0.1s ease;
+        }
+
+        .audio-player .time {
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+
+    <div class="audio-player">
+        <button id="play-pause">▶</button>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <div class="time">
+            <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+        </div>
+        <div class="volume-controls">
+            <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.5">
+            <button id="mute-btn" class="mute-btn">🔇 Mute</button>
+        </div>
+    </div>
+
+
+    <script>
+        // Инициализация WaveSurfer
+        const wavesurfer = WaveSurfer.create({
+            container: document.createElement('div'), // Без визуализации волны
+            backend: 'MediaElement',
+            mediaControls: false, // Убираем базовые элементы управления
+        });
+
+        // Загружаем аудиофайл
+        wavesurfer.load(`{{ song.file.url }}`);
+
+        // Элементы управления
+        const playPauseBtn = document.getElementById('play-pause');
+        const volumeSlider = document.getElementById('volume-slider');
+        const muteBtn = document.getElementById('mute-btn');
+        const progressBar = document.querySelector('.progress-bar');
+        const progressContainer = document.querySelector('.progress-container');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+
+        // Play/Pause функционал
+        playPauseBtn.addEventListener('click', () => {
+            if (wavesurfer.isPlaying()) {
+                wavesurfer.pause();
+                playPauseBtn.textContent = '▶';
+            } else {
+                wavesurfer.play();
+                playPauseBtn.textContent = '⏸ ';
+            }
+        });
+
+        // Регулировка громкости
+        volumeSlider.addEventListener('input', () => {
+            wavesurfer.setVolume(volumeSlider.value);
+        });
+
+        // Включение/выключение звука
+        muteBtn.addEventListener('click', () => {
+            if (wavesurfer.getVolume() > 0) {
+                wavesurfer.setVolume(0);
+                muteBtn.textContent = '🔊 Unmute';
+                volumeSlider.value = 0;
+            } else {
+                wavesurfer.setVolume(0.5);
+                muteBtn.textContent = '🔇 Mute';
+                volumeSlider.value = 0.5;
+            }
+        });
+
+        // Обновление прогресса
+        wavesurfer.on('audioprocess', () => {
+            const currentTime = wavesurfer.getCurrentTime();
+            const duration = wavesurfer.getDuration();
+            const progressPercent = (currentTime / duration) * 100;
+
+            progressBar.style.width = `${progressPercent}%`;
+
+            currentTimeEl.textContent = formatTime(currentTime);
+            durationEl.textContent = formatTime(duration);
+        });
+
+        // Установка времени при клике на прогресс-бар
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.offsetWidth;
+            const clickX = e.offsetX;
+            const duration = wavesurfer.getDuration();
+
+            wavesurfer.seekTo(clickX / width);
+        });
+
+        // Форматирование времени
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+            return `${minutes}:${seconds}`;
+        }
+
+        // Установить громкость по умолчанию
+        wavesurfer.setVolume(0.5);
+    </script> -->
+
+
+                    </div>
                     <form action="{% url 'add_favorite' song.id %}" method="post" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="add-favorite-btn-2">Добавить в избранное</button>
+                        <button type="submit" class="add-favorite-btn-2">❤︎</button>
                     </form>
+
+                {% endif %}
+            </div>
+
+        </section>
+
+        <section class="quick-picks">
+            <div>
+                {% if quick_picks %}
+                    <section class="quick-picks">
+                        <h3>Быстрая выборка</h3>
+                        <div class="track-list">
+    {% for song in quick_picks %}
+        <div class="track"
+             data-audio="{{ song.file.url }}"
+             data-title="{{ song.title }}"
+             data-artist="{{ song.artist }}">
+            {% if song.cover %}
+                <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
+            {% endif %}
+            <div class="song-info">
+                <h4>{{ song.title }}</h4>
+                <span>{{ song.artist }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <p>Нет доступных песен для выбора.</p>
+    {% endfor %}
+</div>
+                        <div class="song-list">
+                            <!--{% for song in quick_picks %}
+                                <div class="song-item">
+                                    {% if song.cover %}
+                                        <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
+                                    {% endif %}
+                                    <div class="song-info">
+                                        <h4>{{ song.title }}</h4>
+                                        <span>{{ song.artist }}</span><br>
+                                        <audio controls>
+                                            <source src="{{ song.file.url }}" type="audio/mpeg">
+                                        </audio>
+                                        <form action="{% url 'add_favorite' song.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="add-favorite-btn-1">Добавить в избранное</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>Нет доступных песен для выбора.</p>
+                            {% endfor %} -->
+                        </div>
+                    </section>
+                {% else %}
+                    <p>Нет доступных песен.</p>
                 {% endif %}
             </div>
         </section>
 
-    <section class="quick-picks">
-        <div>
-            {% if quick_picks %}
-                <section class="quick-picks">
-                    <h3>Быстрая выборка</h3>
-                    <div class="song-list">
-                        {% for song in quick_picks %}
-                            <div class="song-item">
-                                {% if song.cover %}
-                                    <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
-                                {% endif %}
-                                <div class="song-info">
-                                    <h4>{{ song.title }}</h4>
-                                    <span>{{ song.artist }}</span><br>
-                                    <audio controls>
-                                        <source src="{{ song.file.url }}" type="audio/mpeg">
-                                    </audio>
-                                    <form action="{% url 'add_favorite' song.id %}" method="post">
-                                        {% csrf_token %}
-                                        <button type="submit" class="add-favorite-btn-1">Добавить в избранное</button>
-                                    </form>
+        <section class="shared-playlists">
+            <div class="shared-playlists1">
+                <h3>Общие плейлисты</h3>
+                    <div class="playlist-list">
+                        {% if shared_playlists %}
+                            {% for playlist in shared_playlists %}
+                                <div class="playlist-item">
+                                    <a href="{% url 'playlist_detail' playlist.id %}">
+                                        <img style="width: 100%" src="{{ playlist.cover.url }}" alt="Обложка плейлиста {{ playlist.title }}">
+                                    </a>
+                                    <div class="playlist-info">
+                                        <h4>{{ playlist.title }}</h4>
+                                        <span>Автор: {{ playlist.owner.username }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        {% empty %}
-                            <p>Нет доступных песен для выбора.</p>
-                        {% endfor %}
+                            {% empty %}
+                                <p>Нет доступных общих плейлистов.</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>Нет доступных общих плейлистов.</p>
+                        {% endif %}
                     </div>
-                </section>
-            {% else %}
-                <p>Нет доступных песен.</p>
-            {% endif %}
-        </div>
-    </section>
-
-    <section class="shared-playlists">
-        <h3>Общие плейлисты</h3>
-        <div class="playlist-list">
-            {% if shared_playlists %}
-                {% for playlist in shared_playlists %}
-                    <div class="playlist-item">
-                        <a href="{% url 'playlist_detail' playlist.id %}">
-                            <img style="width: 100%" src="{{ playlist.cover.url }}" alt="Обложка плейлиста {{ playlist.title }}">
-                        </a>
-                        <div class="playlist-info">
-                            <h4>{{ playlist.title }}</h4>
-                            <span>Автор: {{ playlist.owner.username }}</span>
-                        </div>
-                    </div>
-                {% empty %}
-                    <p>Нет доступных общих плейлистов.</p>
-                {% endfor %}
-            {% else %}
-                <p>Нет доступных общих плейлистов.</p>
-            {% endif %}
-        </div>
-    </section>
+            </div>
+        </section>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>

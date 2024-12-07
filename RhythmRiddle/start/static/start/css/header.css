@@ -24,7 +24,7 @@ header {
 }
 
 .menu {
-    list-style-type: none;
+    list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
@@ -70,7 +70,7 @@ header-nav .menu li {
 .header-nav .menu li a {
     text-decoration: none;
     color: #333;
-    font-weight: 500;
+    font-weight: bold;
     transition: color 0.3s;
 }
 
@@ -114,4 +114,11 @@ select#country {
 .lang {
     background:green;
     color:green;
+}
+
+.nav-link.active {
+    background-color: #007BFF;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 4px;
 }

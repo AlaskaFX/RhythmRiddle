@@ -4,30 +4,32 @@
     <link rel="stylesheet" href="{% static 'start/css/playlists.css' %}">
 {% endblock %}
 {% block content %}
-<h1>{{ playlist.title }}</h1>
-<img style="width: 10%" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
-<p>Владелец: {{ playlist.owner.username }}</p>
+    <div style="margin-left:20px;">
+        <h1>{{ playlist.title }}</h1>
+        <img style="width: 10%; border-radius:10px" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+        <p>Владелец: {{ playlist.owner.username }}</p>
 
-<h2>Список песен:</h2>
-<ul>
-    {% for song in songs %}
-        <li>
-            <div class="song-item">
-                {% if song.cover %}
-                    <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
-                {% endif %}
-                <div class="song-info">
-                    <h4>{{ song.title }}</h4>
-                    <p>Исполнитель: {{ song.artist }}</p>
-                    <audio controls>
-                        <source src="{{ song.file.url }}" type="audio/mpeg">
-                        Ваш браузер не поддерживает аудио.
-                    </audio>
-                </div>
-            </div>
-        </li>
-    {% empty %}
-        <li>В плейлисте нет песен.</li>
-    {% endfor %}
-</ul>
+            <h2>Список песен:</h2>
+            <ul style="left:10px;">
+                {% for song in songs %}
+                    <li>
+                        <div class="song-item">
+                            {% if song.cover %}
+                                <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
+                            {% endif %}
+                            <div class="song-info">
+                                <h4>{{ song.title }}</h4>
+                                <p>Исполнитель: {{ song.artist }}</p>
+                                <audio controls>
+                                    <source src="{{ song.file.url }}" type="audio/mpeg">
+                                    Ваш браузер не поддерживает аудио.
+                                </audio>
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <label style="position:relative;margin-left:5px">В плейлисте нет песен.</label>
+                {% endfor %}
+            </ul>
+    </div>
 {% endblock %}

@@ -39,3 +39,12 @@ nav .menu li a {
 .language {
     font-size: 14px;
 }
+
+
+.nav-link.active {
+    color: #FFFFFF;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 20px;
+}
+

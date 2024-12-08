@@ -2,51 +2,183 @@
 {% load static %}
 {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'main/css/search.css' %}">
+    <style>
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .audio-player .controls {
+            display: flex;
+            align-items: center;
+        }
+        .audio-player .progress-container {
+            flex-grow: 1;
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+        }
+        .audio-player input[type="range"] {
+            width: 100%;
+        }
+        .audio-player .volume {
+            display: flex;
+            align-items: center;
+        }
+        .audio-player .volume input[type="range"] {
+            width: 80px;
+        }
+        .song-item {
+            cursor: pointer;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        .song-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+    </style>
 {% endblock %}
 {% block content %}
 <div class="search-container">
     <form method="GET" action="{% url 'search' %}">
         <input type="text" name="q" placeholder="Поиск по названию или исполнителю" value="{{ query }}" oninput="this.form.submit()">
         <button type="submit" class="search-btn">Поиск</button>
-
         <div class="filter-container">
             <select name="genre" onchange="this.form.submit()" class="genre">
-                <option value="" >Выберите жанр</option>
+                <option value="">Выберите жанр</option>
                 {% for genre, label in unique_genres.items %}
-                    <option value="{{ genre }}" {% if genre == request.GET.genre %} selected {% endif %} > {{ label }}</option>
+                    <option value="{{ genre }}" {% if genre == request.GET.genre %} selected {% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
-
             <select name="artist" onchange="this.form.submit()" class="artist">
                 <option value="">Выберите исполнителя</option>
                 {% for artist in unique_artists %}
-                    <option value="{{ artist }}" {% if artist == request.GET.artist %} selected {% endif %} > {{ artist }}</option>
+                    <option value="{{ artist }}" {% if artist == request.GET.artist %} selected {% endif %}>{{ artist }}</option>
                 {% endfor %}
             </select>
         </div>
     </form>
-
     <div class="song-list">
         {% for song in songs %}
-            <div class="song-item">
+            <div class="song-item" data-audio="{{ song.file.url }}" data-title="{{ song.title }}" data-artist="{{ song.artist }}">
                 {% if song.cover %}
                     <img src="{{ song.cover.url }}" alt="{{ song.title }} cover" class="cover-image">
                 {% endif %}
-                <h3>{{ song.title }}</h3>
-                <p>{{ song.artist }}</p>
-                <audio controls>
-                    <source src="{{ song.file.url }}" type="audio/mpeg">
-                    Ваш браузер не поддерживает аудиоплеер.
-                </audio>
-                <form action="{% url 'add_favorite' song.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="add-favorite-btn">Добавить в избранное</button>
-                </form>
+                <div>
+                    <h3>{{ song.title }}</h3>
+                    <p>{{ song.artist }}</p>
+                </div>
             </div>
         {% empty %}
             <p>Нет результатов для отображения.</p>
         {% endfor %}
     </div>
 </div>
-{% endblock %}
+<div id="audio-player" class="audio-player" style="display: none;">
+    <div class="controls">
+        <button id="play-pause-btn">▶</button>
+    </div>
+    <div class="progress-container">
+        <span id="current-time">0:00</span>
+        <input type="range" id="progress-bar" value="0" min="0" max="100">
+        <span id="duration">0:00</span>
+    </div>
+    <div class="volume">
+        <button id="mute-btn">🔊</button>
+        <input type="range" id="volume-bar" value="1" min="0" max="1" step="0.001">
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const audioPlayer = document.getElementById("audio-player");
+    const playPauseBtn = document.getElementById("play-pause-btn");
+    const progressBar = document.getElementById("progress-bar");
+    const currentTimeDisplay = document.getElementById("current-time");
+    const durationDisplay = document.getElementById("duration");
+    const muteBtn = document.getElementById("mute-btn");
+    const volumeBar = document.getElementById("volume-bar");
 
+    let audio = new Audio();
+    let currentTrack = null;
+
+    const formatTime = (time) => {
+        const mins = Math.floor(time / 60);
+        const secs = Math.floor(time % 60);
+        return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    };
+
+    const updateProgress = () => {
+        progressBar.value = audio.currentTime;
+        currentTimeDisplay.textContent = formatTime(audio.currentTime);
+    };
+
+    const loadTrack = (src, title, artist) => {
+        if (currentTrack === src) {
+            audio.paused ? audio.play() : audio.pause();
+            return;
+        }
+
+        currentTrack = src;
+        audio.src = src;
+        audio.load();
+        audio.play();
+
+        playPauseBtn.textContent = "⏸";
+        audioPlayer.style.display = "flex";
+
+        audio.addEventListener("loadedmetadata", () => {
+            durationDisplay.textContent = formatTime(audio.duration);
+            progressBar.max = audio.duration;
+        });
+
+        audio.addEventListener("timeupdate", updateProgress);
+    };
+
+    document.querySelectorAll(".song-item").forEach((song) => {
+        song.addEventListener("click", () => {
+            const audioSrc = song.getAttribute("data-audio");
+            const title = song.getAttribute("data-title");
+            const artist = song.getAttribute("data-artist");
+            loadTrack(audioSrc, title, artist);
+        });
+    });
+
+    playPauseBtn.addEventListener("click", () => {
+        if (audio.paused) {
+            audio.play();
+            playPauseBtn.textContent = "⏸";
+        } else {
+            audio.pause();
+            playPauseBtn.textContent = "▶";
+        }
+    });
+
+    progressBar.addEventListener("input", (e) => {
+        audio.currentTime = e.target.value; // Устанавливаем текущее время
+        currentTimeDisplay.textContent = formatTime(audio.currentTime); // Обновляем отображение времени
+    });
+
+    muteBtn.addEventListener("click", () => {
+        audio.muted = !audio.muted;
+        muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+    });
+
+    volumeBar.addEventListener("input", (e) => {
+        audio.volume = e.target.value;
+    });
+});
+</script>
+</div>
+{% endblock %}

@@ -31,6 +31,23 @@
             <li><a href="{% url 'playlists' %}" class="nav-link">Плейлисты</a></li>
             <li><a href="{% url 'subscription' %}" class="nav-link">Подписка</a></li>
         </ul>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Получаем текущий URL
+                const currentUrl = window.location.pathname;
+
+                // Находим все ссылки в меню
+                const navLinks = document.querySelectorAll(".nav-link");
+
+                // Проверяем каждую ссылку
+                navLinks.forEach(link => {
+
+                    if (link.getAttribute("href") === currentUrl) {
+                        link.classList.add("active");
+                    }
+                });
+            });
+        </script>
     </nav>
 
     <select id="country">

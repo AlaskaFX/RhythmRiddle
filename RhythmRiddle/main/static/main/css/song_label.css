@@ -1,5 +1,4 @@
 
-
 .song-list li{
     display: flex;
     flex-direction: column;
@@ -33,16 +32,27 @@ a.download-button {
 
 .add-favorite-btn-2 {
     position:relative;
-    padding: 10px 20px;
+    padding: 10px 40px;
     background-color: #00A0FF;
     color: #fff;
-    margin-left:350px;
-    top:-35px;
+    top:-15px;
+    left: 320px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
 }
 
+.play-highlight {
+    position:relative;
+    padding: 10px 40px;
+    background-color: #00A0FF;
+    color: #fff;
+    top:-15px;
+    left: 320px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
 
 .download-button {
     padding: 10px 20px;
@@ -58,11 +68,22 @@ a.download-button {
 
 .add-favorite-btn-1 {
     position:relative;
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: #00A0FF;
     color: #fff;
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.add-favorite-btn-3 {
+    position:relative;
+    padding: 5px 10px;
+    margin: 0 20px;
+    background-color: #00A0FF;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
 }
 
@@ -73,82 +94,6 @@ a.download-button {
 .shared-playlists1 {
     height:350px;
     width:auto;
-}
-
-
-/* .waveform-container {
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-#waveform-{{ song.id }} {
-    width: 100%;
-    height: 80px;
-}
-
-button.play-pause-btn {
-    padding: 10px 15px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button.play-pause-btn:hover {
-    background-color: #0056b3;
-} */
-
-
-/* .custom-audio-player {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-button.play-pause-btn {
-    background-color:;
-    color: black;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button.play-pause-btn:hover {
-    background-color: ;
-}
-
-input.progress-bar {
-    flex: 1;
-    cursor: pointer;
-}
-
-input.volume-control {
-    width: 100px;
-    cursor: pointer;
-}
-
-.waveform-container {
-    display:none;
-} */
-
-
-
-.audio-player {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 button {
@@ -164,55 +109,89 @@ button:hover {
     color: #000;
 }
 
+.track {
+    padding:20px;
+}
 
+.audio-player {
+    position: fixed;
+    bottom: 25px;
+    right: 20px;
+    width: 50%;
+    background-color: #282828;
+    color: white;
+    padding: 10px;
+    text-align: right;
+    z-index: 1000;
+}
 
+.audio-player--title {
+    font-size: 24px;
+    color: #8E8E8E;
+}
 
+.audio-player--artist {
+    font-size: 18px;
+    color: #D8D8D8;
+}
 
+.audio-player input[type="range"] {
+    flex: 1;
+}
 
+.info-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #282828;
+    color: white;
+    padding: 20px;
+    display: inline-block;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
 
-
-
-
+.progress-bar-player {
+    position: fixed;
+    bottom: 25px;
+    left: 550px;
+    width: 50%;
+    background-color: #282828;
+    color: white;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .track-list {
-    display:flex;
+    margin: 10px;
+    display: flex;
 }
 
 .track {
-    padding:20px !important;
-
+    border-radius: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.track:hover {
+    background-color: #ddd;
+}
 
-.audio-player {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 95%;
-            background-color: #282828;
-            color: white;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-        }
+.icon {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    bottom: 5px;
+}
 
-        .audio-player input[type="range"] {
-            flex: 1;
-        }
-
-        .track-list {
-            margin: 20px;
-        }
-
-        .track {
-            margin: 5px 0;
-            padding: 10px;
-            background-color: #f5f5f5;
-            cursor: pointer;
-        }
-
-        .track:hover {
-            background-color: #ddd;
-        }
+.song-cover {
+    border-radius: 10px;
+    vertical-align: unset;
+}

@@ -1,0 +1,157 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.text-overlay {
+    position: absolute;
+    top: 20%;
+    left: 51%;
+    transform: translateX(-95%);
+    color: white;
+    z-index: 1;
+}
+
+.button-container {
+    position: absolute;
+    top: 70%;
+    left: 52%;
+    transform: translateX(-320%);
+    z-index: 1;
+}
+
+.button-container-1 {
+    margin: 30px;
+}
+
+.button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.song-section {
+    padding: 20px;
+    text-align: center;
+}
+
+.songs {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.song {
+    width: 15%;
+    margin: 10px;
+}
+
+.song img {
+    width: 100%;
+    height: auto;
+    border-radius: 30px;
+}
+
+.block-section {
+    padding: 20px;
+    text-align: center;
+    background: #EDEDED;
+}
+
+.blocks {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.block {
+    width: 7%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.block img {
+    width: 100%;
+    height: auto;
+}
+
+.block h4 {
+    padding: 0 50px;
+    text-align: center;
+}
+
+.image-text-section {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    background: #D6D6D6;
+}
+
+.image-text {
+    width: 50%;
+    position: relative;
+    left: -20px;
+}
+
+.image-text img {
+    width: 100%;
+    height: auto;
+}
+
+.text-content {
+    width: 50%;
+    padding-left: 20px;
+    position: relative;
+    top: 250px;
+    left: 10px;
+}
+
+.three-images {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.three-images img {
+    width: 30%;
+    height: auto;
+}
+
+.final-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.clickable-text a {
+    color: #007bff;
+    text-decoration: underline;
+}

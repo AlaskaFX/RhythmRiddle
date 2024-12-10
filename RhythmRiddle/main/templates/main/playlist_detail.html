@@ -1,35 +1,172 @@
 {% extends 'main/layout.html' %}
 {% load static %}
 {% block extrastyles %}
-    <link rel="stylesheet" href="{% static 'start/css/playlists.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/playlists.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/song_label.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/modal.css' %}">
+    <script src="https://unpkg.com/wavesurfer.js@7.8.10/dist/wavesurfer.min.js"></script>
 {% endblock %}
 {% block content %}
-    <div style="margin-left:20px;">
-        <h1>{{ playlist.title }}</h1>
-        <img style="width: 10%; border-radius:10px" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
-        <p>Владелец: {{ playlist.owner.username }}</p>
+    <div>
+        <section class="highlight">
+            <div class="highlight-image">
+                <img src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+            </div>
+            <div class="highlight-info">
+                <h1>{{ playlist.title }}</h1>
+                <p>Владелец: {{ playlist.owner.username }}</p>
+            </div>
+        </section>
 
+        <section class="playlist-songs">
             <h2>Список песен:</h2>
-            <ul style="left:10px;">
-                {% for song in songs %}
-                    <li>
-                        <div class="song-item">
-                            {% if song.cover %}
-                                <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
-                            {% endif %}
-                            <div class="song-info">
-                                <h4>{{ song.title }}</h4>
-                                <p>Исполнитель: {{ song.artist }}</p>
-                                <audio controls>
-                                    <source src="{{ song.file.url }}" type="audio/mpeg">
-                                    Ваш браузер не поддерживает аудио.
-                                </audio>
-                            </div>
+            {% for song in songs %}
+                <section class="song-item-li">
+                    <div class="song-item track"
+                         data-audio="{{ song.file.url }}"
+                         data-title="{{ song.title }}"
+                         data-artist="{{ song.artist }}"
+                         data-song-id="{{ song.id }}">
+                        {% if song.cover %}
+                            <img src="{{ song.cover.url }}" alt="Обложка {{ song.title }}" class="song-cover">
+                        {% endif %}
+                        <div class="song-info">
+                            <h4>{{ song.title }}</h4>
+                            <p>Исполнитель: {{ song.artist }}</p>
                         </div>
-                    </li>
-                {% empty %}
-                    <label style="position:relative;margin-left:5px">В плейлисте нет песен.</label>
-                {% endfor %}
-            </ul>
+                        <form action="{% url 'add_favorite' song.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="add-favorite-btn-3">❤</button>
+                        </form>
+                    </div>
+                </section>
+            {% empty %}
+                <label style="position:relative;margin-left:5px">В плейлисте нет песен.</label>
+            {% endfor %}
+        </section>
+
+        <div id="info-player" class="info-player">
+            <span id="currentTrack" class="audio-player--title">Название песни</span>
+            <div id="track-title" class="audio-player--artist">Исполнитель</div>
+        </div>
+
+        <div id="audio-player" class="audio-player">
+            <button id="play-pause">
+                <img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">
+            </button>
+            <button id="mute-unmute">
+                <img src="{% static 'main/img/volume.png' %}" alt="Mute" class="icon">
+            </button>
+            <input type="range" id="volume-bar" min="0" max="1" step="0.001" value="1">
+        </div>
+
+        <div id="progress-bar-player" class="progress-bar-player">
+            <span id="current-time">0:00</span>
+            <input type="range" id="progress-bar" min="0" max="100" value="0">
+            <span id="duration">0:00</span>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const player = WaveSurfer.create({
+                container: document.createElement("div"),
+                waveColor: "blue",
+                progressColor: "#007bff",
+                responsive: true,
+                hideScrollbar: true,
+            });
+
+            let currentTrack = null;
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+            }
+
+            function loadTrack(audioSrc, title, artist, songId) {
+                if (currentTrack === audioSrc) {
+                    player.playPause();
+                } else {
+                    currentTrack = audioSrc;
+                    player.stop();
+                    player.load(audioSrc);
+                    player.once('ready', () => {
+                        player.play();
+                        playPauseButton.innerHTML = player.isPlaying()
+                            ? `<img src="{% static 'main/img/play.png' %}" alt="Pause" class="icon">`
+                            : `<img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">`;
+                        currentTrackElement.textContent = title;
+                        trackTitle.textContent = artist;
+                    });
+                }
+            }
+
+            player.on("ready", () => {
+                durationDisplay.textContent = formatTime(player.getDuration());
+                progressBar.value = 0;
+                progressBar.max = player.getDuration();
+            });
+
+            player.on("audioprocess", () => {
+                const currentTime = player.getCurrentTime();
+                currentTimeDisplay.textContent = formatTime(currentTime);
+                progressBar.value = currentTime;
+            });
+
+            player.on("finish", () => {
+                playPauseButton.innerHTML = player.isPlaying()
+                    ? `<img src="{% static 'main/img/play.png' %}" alt="Pause" class="icon">`
+                    : `<img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">`;
+                progressBar.value = 0;
+                currentTimeDisplay.textContent = "0:00";
+                currentTrack = null;
+            });
+
+            const playPauseButton = document.getElementById("play-pause");
+            const muteButton = document.getElementById("mute-unmute");
+            const progressBar = document.getElementById("progress-bar");
+            const volumeBar = document.getElementById("volume-bar");
+            const currentTimeDisplay = document.getElementById("current-time");
+            const durationDisplay = document.getElementById("duration");
+            const currentTrackElement = document.getElementById("currentTrack");
+            const trackTitle = document.getElementById("track-title");
+
+            playPauseButton.addEventListener("click", () => {
+                player.playPause();
+                playPauseButton.innerHTML = player.isPlaying()
+                    ? `<img src="{% static 'main/img/play.png' %}" alt="Pause" class="icon">`
+                    : `<img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">`;
+            });
+
+            muteButton.addEventListener("click", () => {
+                const isMuted = player.getVolume() === 0;
+                player.setVolume(isMuted ? 1 : 0);
+
+                muteButton.innerHTML = isMuted
+                    ? `<img src="{% static 'main/img/volume.png' %}" alt="Mute" class="icon">`
+                    : `<img src="{% static 'main/img/mute.png' %}" alt="Unmute" class="icon">`;
+            });
+
+            progressBar.addEventListener("input", (e) => {
+                const time = parseFloat(e.target.value);
+                player.seekTo(time / player.getDuration());
+            });
+
+            volumeBar.addEventListener("input", (e) => {
+                player.setVolume(e.target.value);
+            });
+
+            document.querySelectorAll(".track").forEach((trackElement) => {
+                trackElement.addEventListener("click", () => {
+                    const audioSrc = trackElement.getAttribute("data-audio");
+                    const title = trackElement.getAttribute("data-title");
+                    const artist = trackElement.getAttribute("data-artist");
+                    const songId = trackElement.getAttribute("data-song-id");
+                    loadTrack(audioSrc, title, artist, songId);
+                });
+            });
+        });
+    </script>
 {% endblock %}

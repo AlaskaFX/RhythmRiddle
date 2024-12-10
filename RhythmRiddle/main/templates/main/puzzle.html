@@ -19,28 +19,29 @@
                 <button class="start-task">Начать задание</button>
                   <div class="modal-overlay" id="quizModal">
                     <div class="modal-content">
-                                <span class="close-modal">&times;</span>
+                        <span class="close-modal">&times;</span>
 
                         <div class="modal">
+                            <div class="overlay"></div>
+                        </div>
 
-		                        <div class="overlay"></div>
-                            </div>
-                        <h2>Сложность задания</h2>
+                        <h2 class="modal-title">Сложность задания</h2>
+                        <p class="modal-desc">Выберите желаемую вам сложность</p>
+
                         <div class="selection-menu">
                             <select id="difficulty">
                                     <option value="easy">Легко</option>
                                     <option value="hard">Тяжело</option>
                             </select>
                         </div>
+
                         <div class="modal-buttons">
                             <button class="start-modal-btn">Начать</button>
                             <button class="close-modal-btn">Отмена</button>
                         </div>
 
                         <div class="game-content" style="display: none; width:auto">
-                            <div class="image-placeholder">
-
-                            </div>
+                            <div class="image-placeholder"></div>
 
                             <div class="action-buttons" >
                                 <button class="action-btn" data-result='win'>Кнопка 1</button>
@@ -48,9 +49,11 @@
                                 <button class="action-btn" data-result='lose'>Кнопка 3</button>
                                 <button class="action-btn" data-result='lose'>Кнопка 4</button>
                             </div>
+
                         </div>
 
                         <div class="result-message" style="display: none;"></div>
+                        <div class="result-image" style="display: none;"></div>
 
                     </div>
                   </div>
@@ -60,8 +63,16 @@
                         function resetGame() {
                             document.querySelector('.game-content').style.display = 'none';
                             document.querySelector('.result-message').style.display = 'none';
+                            document.querySelector('.result-image').style.display = 'none';
+                            document.querySelector('.result-image').innerHTML = '';
                             document.querySelector('.selection-menu').style.display = 'block';
                             document.querySelector('.modal-buttons').style.display = 'block';
+
+                            document.querySelector('.modal-title').textContent = "Сложность задания";
+                            document.querySelector('.modal-desc').textContent = "Выберите желаемую вам сложность";
+
+                            document.querySelector('.modal-title').style.display = 'block';
+                            document.querySelector('.modal-desc').style.display = 'block';
                         }
 
                         const taskPlaceholders = document.querySelectorAll('.task-placeholder');
@@ -76,16 +87,17 @@
                         const openModalBtn = document.querySelector(".start-task");
                         const closeModalBtns = document.querySelectorAll(".close-modal, .close-modal-btn");
 
-                        openModalBtn.addEventListener("click", () => {
-                            modal.style.display = "flex";
-                        });
-
                         closeModalBtns.forEach(btn => {
                             btn.addEventListener("click", () => {
                                 stopBackgroundMusic();
                                 modal.style.display = "none";
                                 resetGame();
                             });
+                        });
+
+                        openModalBtn.addEventListener("click", () => {
+                            modal.style.display = "flex";
+                            resetGame();
                         });
 
                         window.addEventListener("click", (e) => {
@@ -110,6 +122,16 @@
 
                             const selectedType = document.querySelector('.task-placeholder.active').dataset.type;
                             const selectedDifficulty = document.getElementById('difficulty').value;
+
+                            const difficultyLabels = {
+                                easy: "Легко",
+                                hard: "Тяжело"
+                            };
+
+                            const readableDifficulty = difficultyLabels[selectedDifficulty] || selectedDifficulty;
+
+                            document.querySelector('.modal-title').textContent = "Задание";
+                            document.querySelector('.modal-desc').textContent = `Сложность: ${readableDifficulty}`;
 
                             document.querySelector('.selection-menu').style.display = 'none';
                             document.querySelector('.modal-buttons').style.display = 'none';
@@ -175,6 +197,11 @@
 
                                 const result = button.dataset.result;
 
+                                const modalTitle = document.querySelector('.modal-title');
+                                const modalDesc = document.querySelector('.modal-desc');
+                                modalTitle.style.display = 'none';
+                                modalDesc.style.display = 'none';
+
                                 buttonSound = new Audio(button.dataset.result === 'win'
                                     ? "{% static 'main/audio/win-sound.wav' %}"
                                     : "{% static 'main/audio/lose-sound.wav' %}");
@@ -182,8 +209,18 @@
 
                                 document.querySelector('.game-content').style.display = 'none';
 
+                                const resultImage = document.querySelector('.result-image');
                                 const resultMessage = document.querySelector('.result-message');
-                                resultMessage.textContent = button.dataset.result === 'win' ? "Вы победили!" : "Вы проиграли!";
+
+                                if (result === 'win') {
+                                    resultImage.innerHTML = '<img src="{% static 'main/img/you-win.png' %}" alt="Победа" style="width: 300px;">';
+                                    resultMessage.innerHTML = `<h2>Победа</h2><p>Вы ответили верно!</p>`;
+                                } else {
+                                    resultImage.innerHTML = '<img src="{% static 'main/img/game-over.png' %}" alt="Поражение" style="width: 300px;">';
+                                    resultMessage.innerHTML = `<h2>Поражение</h2><p>Вы не смогли ответить верно. Попробуйте в следующий раз!</p>`;
+                                }
+
+                                resultImage.style.display = 'block';
                                 resultMessage.style.display = 'block';
                             });
                         });

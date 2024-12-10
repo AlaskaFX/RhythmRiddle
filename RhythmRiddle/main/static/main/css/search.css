@@ -13,33 +13,36 @@ h1 {
     position:relative;
 }
 
-.song-list {
+.song-list-1 {
     position:relative;
     top:20px;
-
+    padding: 0 250px;
 }
 
-.song-item {
-    float: left;
-    background-color: #fff;
+.song-item-1 {
+    cursor: pointer;
     border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 10px;
-    text-align: center;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    font-size: 14px;
-    color: #666;
-    height: 25%;
-    width: 25%;
-    padding:10px;
+    padding: 10px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.song-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 .cover-image {
     border: 1px solid #ddd;
     border-radius: 10px;
+    margin: 0 10px;
 }
 
-input {
+.input-1 {
     margin-left:250px;
     width:65%;
     padding: 10px 20px;
@@ -59,7 +62,7 @@ input {
 }
 
 .search-btn {
-    padding: 10px 20px;
+    padding: 10px 60px;
     background-color: #00A0FF;
     color: #fff;
     border: none;
@@ -73,7 +76,7 @@ input {
 
 .artist {
     position:relative;
-    margin-left:150px;
+    margin-left:250px;
     top:10px;
     width:13%;
     padding: 10px 20px;
@@ -133,12 +136,6 @@ input {
     color: #777;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
@@ -149,88 +146,10 @@ body {
 }
 
 main {
-    padding: 20px;
+    padding: 20px 100px;
 }
 
-.playlists h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+.song-info-1 {
+    position: relative;
+    top: 7px;
 }
-
-.custom-audio-player {
-    display: relative;
-    align-items: center;
-    gap: 10px;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-button.play-pause-btn {
-    background-color:;
-    color: black;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button.play-pause-btn:hover {
-    background-color: ;
-}
-
-input.progress-bar {
-    flex: 1;
-    cursor: pointer;
-    width:100px;
-}
-
-input.volume-control {
-    width: 100px;
-    cursor: pointer;
-}
-
-.waveform-container {
-    display:none;
-}
-
-
-.audio-player {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    z-index: 1000;
-}
-
-.player-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#progress-bar {
-    flex-grow: 1;
-    margin: 0 10px;
-}
-
-#volume-bar {
-    width: 100px;
-}
-
-button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-
-

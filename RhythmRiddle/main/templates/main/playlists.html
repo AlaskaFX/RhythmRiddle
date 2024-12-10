@@ -10,7 +10,7 @@
             <div class="playlists">
                 {% for playlist in shared_playlists %}
                     <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
-                        <img style="width: 10%" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+                        <img style="width: 10%; border-radius: 10px" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
                         <div class="playlist-info">
                             <h4>{{ playlist.title }}</h4>
                             <p>{{ playlist.owner.username }}</p>
@@ -22,13 +22,12 @@
             </div>
         </div>
 
-
         <div class="playlists-column">
             <h2>Мои плейлисты</h2>
             <div class="playlists">
                 {% for playlist in my_playlists %}
                     <div class="playlist-item" onclick="window.location.href='{% url 'playlist_detail' playlist.id %}'">
-                        <img style="width: 10%" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
+                        <img style="width: 10%; border-radius: 10px" src="{{ playlist.cover.url }}" alt="Обложка {{ playlist.title }}">
                         <div class="playlist-info">
                             <h4>{{ playlist.title }}</h4>
                             <p>{{ playlist.owner.username }}</p>
@@ -44,18 +43,21 @@
     <button id="createPlaylistBtn">Создать плейлист</button>
 
     <div id="createPlaylistModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content-1">
             <h2>Создать новый плейлист</h2>
-            <form id="createPlaylistForm" method="POST" enctype="multipart/form-data" action="{% url 'create_playlist' %}">
+            <form class="createPlaylist-1" id="createPlaylistForm" method="POST" enctype="multipart/form-data" action="{% url 'create_playlist' %}">
                 {% csrf_token %}
                 <label for="playlist-title">Название:</label>
-                <input type="text" id="playlist-title" name="title" required>
+                <input type="text" id="playlist-title" name="title" required style="border-radius: 10px; font-size: 24px;">
                 <label for="playlist-cover">Обложка:</label>
-                <input type="file" id="playlist-cover" name="cover" required>
-
+                <input type="file" class="file-input" id="playlist-cover" name="cover" required style="display: none;" onchange="updateFileName()">
+                <button type="button" class="modal-buttons" onclick="document.getElementById('playlist-cover').click();">Выбрать файл</button>
+                <span id="file-name">Не выбран ни один файл</span>
+                <div class="close-add-play" style="display: grid">
+                    <button class="modal-buttons" type="submit" style="margin: 10px 0;">Создать</button>
+                    <button class="modal-buttons" id="closeModal">Закрыть</button>
+                </div>
             </form>
-            <div class="close-add-play"><button id="closeModal">Закрыть</button></div>
-            <button type="submit">Создать</button>
         </div>
     </div>
 
@@ -67,5 +69,11 @@
         document.getElementById('closeModal').onclick = function() {
             document.getElementById('createPlaylistModal').style.display = 'none';
         };
+
+        function updateFileName() {
+            const input = document.getElementById('playlist-cover');
+            const fileName = input.files.length > 0 ? input.files[0].name : 'Не выбран ни один файл';
+            document.getElementById('file-name').textContent = fileName;
+        }
     </script>
 {% endblock %}

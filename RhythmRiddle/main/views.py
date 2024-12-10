@@ -96,7 +96,7 @@ def feed(request):
 
     if user_genres:
         filtered_songs = list(Song.objects.filter(song_genre__in=user_genres))
-        quick_picks = random.sample(filtered_songs, min(len(filtered_songs), 4))
+        quick_picks = random.sample(filtered_songs, min(len(filtered_songs), 6))
     else:
         quick_picks = []
 
@@ -108,7 +108,7 @@ def feed(request):
         random_songs = []
         top_song = None
     else:
-        random_songs = random.sample(songs, min(len(songs), 4))
+        random_songs = random.sample(songs, min(len(songs), 6))
         top_song = Song.objects.order_by('-play_count').first()
 
     context = {

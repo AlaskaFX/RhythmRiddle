@@ -2,26 +2,154 @@
 {% load static %}
 {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'main/css/favorites.css' %}">
+    <link rel="stylesheet" href="{% static 'start/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/song_label.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/modal.css' %}">
+    <script src="https://unpkg.com/wavesurfer.js@7.8.10/dist/wavesurfer.min.js"></script>
 {% endblock %}
 {% block content %}
     <h1>Избранные песни</h1>
     <div class="favorites-list">
         {% for favorite in favorite_songs %}
-            <div class="favorite-item">
+            <div class="favorite-item track"
+                 data-audio="{{ favorite.song.file.url }}"
+                 data-title="{{ favorite.song.title }}"
+                 data-artist="{{ favorite.song.artist }}"
+                 data-song-id="{{ favorite.song.id }}">
+
                 {% if favorite.song.cover %}
                     <img src="{{ favorite.song.cover.url }}" alt="Обложка {{ favorite.song.title }}" class="song-cover">
                 {% endif %}
                 <div class="song-info">
                     <h4>{{ favorite.song.title }}</h4>
                     <span>{{ favorite.song.artist }}</span><br>
-                    <a href="{{ favorite.song.file.url }}" download class="download-button">Скачать</a>
-                    <audio controls>
-                        <source src="{{ favorite.song.file.url }}" type="audio/mpeg">
-                    </audio>
                 </div>
             </div>
         {% empty %}
             <p>У вас нет избранных песен.</p>
         {% endfor %}
     </div>
+
+    <div id="info-player" class="info-player">
+        <span id="currentTrack" class="audio-player--title">Название песни</span>
+        <div id="track-title" class="audio-player--artist">Исполнитель</div>
+    </div>
+
+    <div id="audio-player" class="audio-player">
+        <button id="play-pause">
+            <img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">
+        </button>
+        <button id="mute-unmute">
+            <img src="{% static 'main/img/volume.png' %}" alt="Mute" class="icon">
+        </button>
+        <input type="range" id="volume-bar" min="0" max="1" step="0.001" value="1">
+    </div>
+
+    <div id="progress-bar-player" class="progress-bar-player">
+        <span id="current-time">0:00</span>
+        <input type="range" id="progress-bar" min="0" max="100" value="0">
+        <span id="duration">0:00</span>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const player = WaveSurfer.create({
+                container: document.createElement("div"),
+                waveColor: "blue",
+                progressColor: "#007bff",
+                responsive: true,
+                hideScrollbar: true,
+                height: 0,
+                color: "blue"
+            });
+
+            const playPauseButton = document.getElementById("play-pause");
+            const muteButton = document.getElementById("mute-unmute");
+            const progressBar = document.getElementById("progress-bar");
+            const volumeBar = document.getElementById("volume-bar");
+            const currentTimeDisplay = document.getElementById("current-time");
+            const durationDisplay = document.getElementById("duration");
+            const trackTitle = document.getElementById("track-title");
+            const currentTrackElement = document.getElementById("currentTrack");
+
+            let currentTrack = null;
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+            }
+
+            player.on("ready", () => {
+                durationDisplay.textContent = formatTime(player.getDuration());
+                progressBar.value = 0;
+                progressBar.max = player.getDuration();
+            });
+
+            player.on("audioprocess", () => {
+                const currentTime = player.getCurrentTime();
+                currentTimeDisplay.textContent = formatTime(currentTime);
+                progressBar.value = currentTime;
+            });
+
+            player.on("finish", () => {
+                playPauseButton.innerHTML = `<img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">`;
+                progressBar.value = 0;
+                currentTimeDisplay.textContent = "0:00";
+                currentTrack = null;
+            });
+
+            playPauseButton.addEventListener("click", () => {
+                player.playPause();
+                playPauseButton.innerHTML = player.isPlaying()
+                    ? `<img src="{% static 'main/img/play.png' %}" alt="Pause" class="icon">`
+                    : `<img src="{% static 'main/img/play-button.png' %}" alt="Play" class="icon">`;
+            });
+
+            muteButton.addEventListener("click", () => {
+                const isMuted = player.getVolume() === 0;
+                player.setVolume(isMuted ? 1 : 0);
+
+                muteButton.innerHTML = isMuted
+                    ? `<img src="{% static 'main/img/volume.png' %}" alt="Mute" class="icon">`
+                    : `<img src="{% static 'main/img/mute.png' %}" alt="Unmute" class="icon">`;
+            });
+
+            progressBar.addEventListener("input", (e) => {
+                const time = parseFloat(e.target.value);
+                player.seekTo(time / player.getDuration());
+            });
+
+            volumeBar.addEventListener("input", (e) => {
+                player.setVolume(e.target.value);
+            });
+
+            document.querySelectorAll(".track").forEach((trackElement) => {
+                trackElement.addEventListener("click", () => {
+                    const audioSrc = trackElement.getAttribute("data-audio");
+                    const title = trackElement.getAttribute("data-title");
+                    const artist = trackElement.getAttribute("data-artist");
+                    const songId = trackElement.getAttribute("data-song-id");
+
+                    loadTrack(audioSrc, title, artist, songId);
+                });
+            });
+
+            function loadTrack(audioSrc, title, artist, songId) {
+                if (currentTrack === audioSrc) {
+                    player.playPause();
+                } else {
+                    currentTrack = audioSrc;
+                    player.stop();
+                    player.load(audioSrc);
+                    player.once('ready', () => {
+                        player.play();
+                        playPauseButton.innerHTML = `<img src="{% static 'main/img/play.png' %}" alt="Pause" class="icon">`;
+                        currentTrackElement.textContent = title;
+                        trackTitle.textContent = artist;
+                    });
+                }
+            }
+        });
+    </script>
 {% endblock %}

@@ -1,8 +1,97 @@
 {% extends 'start/layout.html' %}
 {% load static %}
 {% block extrastyles %}
-    <link rel="stylesheet" href="{% static 'start/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'start/css/index-new.css' %}">
 {% endblock %}
 {% block content %}
-    <h4>главное</h4>
+    <section class="image-container">
+        <img src="{% static 'start/img/waifu2x_photo_noise1_scale_waifu2x_photo_noise1_scale.png' %}">
+        <div class="text-overlay">
+            <h1>Присоединяйтесь к сообществу Rhythm Riddle</h1>
+            <h4 style="margin: 50px 0">Откройте для себя мир музыки, где каждая мелодия — это загадка! В нашем сообществе вы сможете не только наслаждаться любимыми мелодиями, но и участвовать в увлекательных играх, которые сделают ваш опыт с мелодиями незабываемым.</h4>
+        </div>
+        <div class="button-container">
+            <a href="{% url 'register' %}" class="button">Зарегистрируйтесь бесплатно</a>
+        </div>
+    </section>
+
+    <section class="song-section">
+        <h1>Слушайте то, сейчас популярно вместе с сообществом</h1>
+        <div class="songs">
+            <div class="song">
+                <img src="{% static 'start/img/200x200.jpg' %}" alt="Обложка песни 1">
+                <h4 style="display: flex">Худи</h4>
+                <h4 style="display: flex">Джиган</h4>
+                <h4 style="display: flex">Худи</h4>
+            </div>
+            <div class="song">
+                <img src="{% static 'start/img/200x200 (1).jpg' %}" alt="Обложка песни 2">
+                <h4 style="display: flex">Асфальт</h4>
+                <h4 style="display: flex">Jakone, Kiliana</h4>
+                <h4 style="display: flex">Асфальт</h4>
+            </div>
+            <div class="song">
+                <img src="{% static 'start/img/200x200 (2).jpg' %}" alt="Обложка песни 3">
+                <h4 style="display: flex">Поезда</h4>
+                <h4 style="display: flex">Женя Трофимов</h4>
+                <h4 style="display: flex">Поезда</h4>
+            </div>
+            <div class="song">
+                <img src="{% static 'start/img/200x200 (3).jpg' %}" alt="Обложка песни 4">
+                <h4 style="display: flex">ParisLove</h4>
+                <h4 style="display: flex">FORTUNA 812</h4>
+                <h4 style="display: flex">ParisLove</h4>
+            </div>
+            <div class="song">
+                <img src="{% static 'start/img/200x200 (4).jpg' %}" alt="Обложка песни 5">
+                <h4 style="display: flex">Матушка</h4>
+                <h4 style="display: flex">Татьяна Куртукова</h4>
+                <h4 style="display: flex">Матушка</h4>
+            </div>
+        </div>
+        <div class="button-container-1">
+            <a href="{% url 'register' %}" class="button">Просмотреть популярные мелодии</a>
+        </div>
+    </section>
+
+    <section class="block-section">
+        <h1>Помимо моментального доступа к миллионам песен, мы также предоставляем другие функции</h1>
+        <div class="blocks">
+            <div class="block">
+                <img src="{% static 'start/img/plugin.png' %}" alt="Предложение 1">
+                <h4>Участвуйте в интерактивных викторинах каждый день и получайте игровые очки, которые можно обменять на ценные призы, скидки на билеты, мерч и прочее.</h4>
+            </div>
+            <div class="block">
+                <img src="{% static 'start/img/playlist.png' %}" alt="Предложение 2">
+                <h4>Создавайте свои плейлисты или вместе со своими друзьями и знакомыми, добавляйте в них мелодии и распространяйте плейлисты в сообществе.</h4>
+            </div>
+        </div>
+        <div class="button-container-1">
+            <a href="{% url 'register' %}" class="button">Начните уже прямо сейчас</a>
+        </div>
+    </section>
+
+    <section class="image-text-section">
+        <div class="image-text">
+            <img src="{% static 'start/img/картинка.png' %}" alt="Изображение">
+        </div>
+        <div class="text-content">
+            <h1 style="margin: 50px 0">Никогда не ставьте музыку на паузу</h1>
+            <h4>Rhythm Riddle доступен на нашем сайте, iOS и Android. Слушайте музыку всегда и везде вместе с нами.</h4>
+            <div class="three-images">
+                <img src="{% static 'start/img/гугл.png' %}" alt="Изображение 1">
+                <img src="{% static 'start/img/апл.png' %}" alt="Изображение 2">
+                <img src="{% static 'start/img/галерея.png' %}" alt="Изображение 3">
+            </div>
+        </div>
+    </section>
+
+    <section class="final-section">
+        <h1>Присоединяйтесь к нам!</h1>
+        <h4>Сохраняйте мелодии, следите за артистами, участвуйте в интерактивах и создавайте плейлисты. Это абсолютно бесплатно.</h4>
+        <div class="button-container-1">
+            <a href="{% url 'register' %}" class="button">Создать аккаунт</a>
+        </div>
+        <p class="clickable-text"><a href="{% url 'login' %}">Уже имеется аккаунт?</a></p>
+    </section>
 {% endblock %}

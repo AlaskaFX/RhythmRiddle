@@ -16,21 +16,19 @@ body {
     text-align: center;
 }
 
-.action-btn
-{
-
+.action-btn {
     padding: 10px 20px;
     background-color: #00A0FF;
     color: #fff;
     border: none;
     border-radius: 20px;
-    cursor: pointer;
-    top:10px;
-    float:center;
+    position: relative;
+    display: inline-grid;
+    margin: 10px;
+    top: 10px;
 }
 
-.action-btn:hover
-{
+.action-btn:hover {
     background-color: #0088FF;
     border-radius: 20px;
     color: white;
@@ -69,7 +67,7 @@ body {
     padding: 30px;
     border-radius: 8px;
     top:-80px;
-    width: 30%;
+    width: 25%;
     max-width: 50%;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -91,7 +89,7 @@ body {
 }
 
 select#difficulty {
-    width: 200px;
+    width: 350px;
     height: 40px;
     font-size: 16px;
     padding: 5px;
@@ -146,4 +144,9 @@ option {
 .close-modal-btn:hover {
     background-color: #00A0FF;
     color:#fff;
+}
+
+.action-buttons {
+    display: grid;
+    text-align: center;
 }

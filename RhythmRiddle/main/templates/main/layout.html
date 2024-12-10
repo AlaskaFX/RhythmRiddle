@@ -33,13 +33,10 @@
         </ul>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                // Получаем текущий URL
                 const currentUrl = window.location.pathname;
 
-                // Находим все ссылки в меню
                 const navLinks = document.querySelectorAll(".nav-link");
 
-                // Проверяем каждую ссылку
                 navLinks.forEach(link => {
 
                     if (link.getAttribute("href") === currentUrl) {
@@ -54,11 +51,34 @@
         <option value="russia">Русский</option>
         <option value="eng">Английский</option>
     </select>
-    <div class="header-user-icon">
-        <a href="{% url 'account_data' %}">
-            <img src="{% static 'start/img/user-icon.png' %}" />
-            </a>
+    <div class="header-user-icon" id="user-menu-toggle">
+        <img src="{% static 'start/img/user-icon.png' %}" />
+        <div class="user-menu" id="user-menu" style="display: none;">
+            <img src="{% static 'main/img/user.png' %}" alt="User Photo" class="user-photo">
+            <a href="{% url 'favorites' %}" class="user-link">Избранные</a>
+            <a href="{% url 'account_data' %}" class="user-link">Настройки</a>
+            <a href="{% url 'logout' %}" class="user-link">Выйти</a>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userMenuToggle = document.getElementById("user-menu-toggle");
+            const userMenu = document.getElementById("user-menu");
+
+            userMenuToggle.addEventListener("click", (event) => {
+                userMenu.style.display = userMenu.style.display === "none" || userMenu.style.display === "" ? "block" : "none";
+
+                // Закрыть меню при клике вне меню
+                document.addEventListener("click", (e) => {
+                    if (!userMenuToggle.contains(e.target)) {
+                        userMenu.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+
 </header>
 <main>
     {% block content %}

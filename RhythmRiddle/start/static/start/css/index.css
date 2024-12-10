@@ -15,7 +15,7 @@ body {
 }
 
 main {
-    padding: 20px;
+    padding: 20px 200px;
 }
 
 .highlight {
@@ -102,12 +102,17 @@ main {
 
 .playlist-list {
     display: flex;
-    gap: 100px;
+    gap: 10px;
     margin-left: 5px;
     height:80px;
 }
 
 .quick-picks {
+    padding: 0 20px;
+}
+
+.shared-playlists {
+    padding: 0 40px;
 }
 
 .volume-control input[type="range"] {
@@ -127,8 +132,4 @@ main {
 
 .playlist-info {
     margin-top: 5px;
-}
-
-.shared-playlists {
-    margin-top: 200px;
 }

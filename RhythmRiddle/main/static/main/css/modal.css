@@ -18,18 +18,20 @@
     margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 40%;
+    text-align: center;
 }
 
 .genre-placeholder {
     display: inline-block;
     width: 80px;
     height: 80px;
-    border: 2px dashed #ccc;
+    border: 2px solid #ccc;
     margin: 10px;
     text-align: center;
     line-height: 80px;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .selected {
